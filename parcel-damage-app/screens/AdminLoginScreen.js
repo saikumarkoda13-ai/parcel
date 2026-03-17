@@ -58,7 +58,7 @@ export default function AdminLoginScreen({ navigation }) {
                     <View style={styles.card}>
                         <View style={styles.hint}>
                             <Text style={{ color: COLORS.warning, fontSize: 13, fontWeight: '600' }}>
-                                💡 Default Access: admin / admin
+                                Default Access: admin / admin
                             </Text>
                         </View>
 
@@ -94,7 +94,7 @@ export default function AdminLoginScreen({ navigation }) {
                             {loading ? (
                                 <ActivityIndicator color="#000" />
                             ) : (
-                                <Text style={styles.loginBtnText}>Unlock Portal  →</Text>
+                                <Text style={styles.loginBtnText}>AUTHORIZE ACCESS</Text>
                             )}
                         </TouchableOpacity>
                     </View>
@@ -120,6 +120,6 @@ const styles = StyleSheet.create({
     inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16, marginBottom: 4 },
     inputIcon: { display: 'none' },
     input: { flex: 1, color: COLORS.text, paddingVertical: 15, fontSize: 16 },
-    loginBtn: { backgroundColor: COLORS.warning, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 28, shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 15, elevation: 10 },
-    loginBtnText: { color: '#000', fontSize: 17, fontWeight: '800', letterSpacing: 0.5 },
+    loginBtn: { backgroundColor: COLORS.warning, paddingVertical: 20, borderRadius: 20, alignItems: 'center', marginTop: 28, shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },
+    loginBtnText: { color: '#000', fontSize: 18, fontWeight: '900', letterSpacing: 1 },
 });

@@ -31,13 +31,13 @@ export default function LandingScreen({ navigation }) {
 
                     <View style={styles.buttonGroup}>
                         <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate('UserLogin')}>
-                            <Text style={styles.primaryBtnText}>User Login</Text>
+                            <Text style={styles.primaryBtnText}>SIGN IN</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.outlineBtn} onPress={() => navigation.navigate('UserRegister')}>
-                            <Text style={styles.outlineBtnText}>Create Account</Text>
+                            <Text style={styles.outlineBtnText}>REGISTER</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.adminBtn} onPress={() => navigation.navigate('AdminLogin')}>
-                            <Text style={styles.adminBtnText}>Admin Access</Text>
+                            <Text style={styles.adminBtnText}>ADMIN PORTAL</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

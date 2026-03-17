@@ -40,7 +40,7 @@ export default function UserHomeScreen({ navigation, route }) {
                         <Text style={styles.subtitle}>Dashboard access active</Text>
                     </View>
                     <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-                        <Text style={styles.logoutText}>Logout</Text>
+                        <Text style={styles.logoutText}>LOGOUT</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -68,7 +68,7 @@ export default function UserHomeScreen({ navigation, route }) {
                     <Text style={styles.predictTitle}>Open Scanning Portal</Text>
                     <Text style={styles.predictSubtitle}>Real-time parcel classification and damage detection</Text>
                     <View style={styles.predictBtn}>
-                        <Text style={styles.predictBtnText}>Launch Scanner  →</Text>
+                        <Text style={styles.predictBtnText}>LAUNCH SCANNER</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     scanBadge: { width: 40, height: 40, borderRadius: 8, backgroundColor: COLORS.primary + '40', borderWidth: 2, borderColor: COLORS.primary },
     predictTitle: { fontSize: 24, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
     predictSubtitle: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 24, lineHeight: 20 },
-    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 15, paddingHorizontal: 36, borderRadius: 16, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 10 },
-    predictBtnText: { color: COLORS.white, fontWeight: '800', fontSize: 16 },
+    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, paddingHorizontal: 40, borderRadius: 20, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 14, elevation: 12 },
+    predictBtnText: { color: COLORS.white, fontWeight: '900', fontSize: 16, letterSpacing: 1 },
     infoRow: { flexDirection: 'row', gap: 14 },
     infoCard: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, borderColor: COLORS.border, borderWidth: 1 },
     miniBadge: { width: 24, height: 4, borderRadius: 2, backgroundColor: COLORS.primaryLight + '40', marginBottom: 12 },

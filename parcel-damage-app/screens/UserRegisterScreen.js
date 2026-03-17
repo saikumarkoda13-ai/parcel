@@ -45,10 +45,10 @@ export default function UserRegisterScreen({ navigation }) {
             const res = await registerUser(form);
             if (res.success) {
                 if (Platform.OS === 'web') {
-                    window.alert('Success! Registration successful.');
+                    window.alert('Success: Registration successful.');
                     navigation.navigate('UserLogin');
                 } else {
-                    Alert.alert('Success! 🎉', res.message, [{ text: 'Login Now', onPress: () => navigation.navigate('UserLogin') }]);
+                    Alert.alert('Success', res.message, [{ text: 'Login Now', onPress: () => navigation.navigate('UserLogin') }]);
                 }
             } else {
                 if (Platform.OS === 'web') window.alert('Registration Failed: ' + res.message);
@@ -107,7 +107,7 @@ export default function UserRegisterScreen({ navigation }) {
                             {loading ? (
                                 <ActivityIndicator color="#fff" />
                             ) : (
-                                <Text style={styles.registerBtnText}>Complete Registration  →</Text>
+                                <Text style={styles.registerBtnText}>REGISTER ACCOUNT</Text>
                             )}
                         </TouchableOpacity>
 
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16 },
     inputIcon: { display: 'none' },
     input: { flex: 1, color: COLORS.text, paddingVertical: 14, fontSize: 16 },
-    registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 15, elevation: 8 },
-    registerBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
+    registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },
+    registerBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 0.5 },
     loginLink: { marginTop: 20, alignItems: 'center' },
     loginLinkText: { color: COLORS.muted, fontSize: 14 },
     loginLinkAction: { color: COLORS.primaryLight, fontWeight: '800' },

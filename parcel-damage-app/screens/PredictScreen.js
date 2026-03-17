@@ -92,10 +92,10 @@ export default function PredictScreen({ navigation }) {
                 {/* Pick buttons */}
                 <View style={styles.pickRow}>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
-                        <Text style={styles.pickBtnText}>Gallery</Text>
+                        <Text style={styles.pickBtnText}>GALLERY</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
-                        <Text style={styles.pickBtnText}>Camera</Text>
+                        <Text style={styles.pickBtnText}>CAMERA</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -106,8 +106,8 @@ export default function PredictScreen({ navigation }) {
                     disabled={!imageUri || loading}
                 >
                     {loading
-                        ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>Analyzing...</Text></>
-                        : <Text style={styles.predictBtnText}>Run Classification</Text>
+                        ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>ANALYZING...</Text></>
+                        : <Text style={styles.predictBtnText}>START CLASSIFICATION</Text>
                     }
                 </TouchableOpacity>
 
@@ -152,10 +152,10 @@ const styles = StyleSheet.create({
     imagePlaceholder: { flex: 1, alignItems: 'center', justifyContent: 'center' },
     placeholderIcon: { width: 60, height: 60, borderRadius: 30, backgroundColor: COLORS.card2, borderColor: COLORS.border, borderWidth: 2 },
     pickRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
-    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 16, padding: 18, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1 },
-    pickBtnText: { color: COLORS.text, fontWeight: '700', fontSize: 16 },
-    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 14, elevation: 10, marginBottom: 24 },
-    predictBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '800', letterSpacing: 0.5 },
+    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1 },
+    pickBtnText: { color: COLORS.text, fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
+    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12, marginBottom: 24 },
+    predictBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 1 },
     resultCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 28, borderWidth: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 12 },
     statusLabel: { fontSize: 12, fontWeight: '800', color: COLORS.muted, textAlign: 'center', textTransform: 'uppercase', letterSpacing: 1 },
     resultLabel: { fontSize: 36, fontWeight: '900', textAlign: 'center', marginVertical: 12, letterSpacing: 1.5 },

@@ -90,7 +90,7 @@ export default function UserLoginScreen({ navigation }) {
                             {loading ? (
                                 <ActivityIndicator color="#fff" />
                             ) : (
-                                <Text style={styles.loginBtnText}>Secure Login  →</Text>
+                                <Text style={styles.loginBtnText}>SIGN IN</Text>
                             )}
                         </TouchableOpacity>
 
@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
     inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16, marginBottom: 4 },
     inputIcon: { display: 'none' },
     input: { flex: 1, color: COLORS.text, paddingVertical: 15, fontSize: 16 },
-    loginBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 28, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 15, elevation: 10 },
-    loginBtnText: { color: COLORS.white, fontSize: 17, fontWeight: '800', letterSpacing: 0.5 },
+    loginBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', marginTop: 28, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },
+    loginBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 1 },
     registerLink: { marginTop: 22, alignItems: 'center' },
     registerLinkText: { color: COLORS.muted, fontSize: 14 },
     registerLinkAction: { color: COLORS.primaryLight, fontWeight: '800' },
