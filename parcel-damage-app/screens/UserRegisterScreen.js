@@ -2,24 +2,28 @@ import React, { useState } from 'react';
 import {
     View, Text, TextInput, TouchableOpacity,
     StyleSheet, StatusBar, ScrollView, ActivityIndicator, Alert,
+    KeyboardAvoidingView, Platform, SafeAreaView
 } from 'react-native';
 import { registerUser } from '../services/api';
 import { COLORS } from '../theme';
 
-const Field = ({ label, value, onChange, placeholder, secure, keyboard }) => {
+const Field = ({ label, value, onChange, placeholder, secure, keyboard, icon }) => {
     return (
-        <View style={{ marginBottom: 4 }}>
+        <View style={styles.fieldContainer}>
             <Text style={styles.label}>{label}</Text>
-            <TextInput
-                style={styles.input}
-                placeholder={placeholder || `Enter ${label}`}
-                placeholderTextColor={COLORS.border}
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry={secure}
-                keyboardType={keyboard || 'default'}
-                autoCapitalize="none"
-            />
+            <View style={styles.inputWrapper}>
+                <Text style={styles.inputIcon}>{icon}</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder={placeholder || `Enter ${label.replace(' *', '')}`}
+                    placeholderTextColor={COLORS.muted}
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry={secure}
+                    keyboardType={keyboard || 'default'}
+                    autoCapitalize="none"
+                />
+            </View>
         </View>
     );
 };
@@ -33,70 +37,116 @@ export default function UserRegisterScreen({ navigation }) {
     const handleRegister = async () => {
         const { name, loginid, password, mobile, email } = form;
         if (!name || !loginid || !password || !mobile || !email) {
-            Alert.alert('Error', 'Please fill all required fields (*).');
+            if (Platform.OS === 'web') window.alert('Please fill all required fields (*).');
+            else Alert.alert('Error', 'Please fill all required fields (*).');
             return;
         }
         setLoading(true);
         try {
             const res = await registerUser(form);
             if (res.success) {
-                Alert.alert('Success! 🎉', res.message, [{ text: 'Login Now', onPress: () => navigation.navigate('UserLogin') }]);
+                if (Platform.OS === 'web') {
+                    window.alert('Success! Registration successful.');
+                    navigation.navigate('UserLogin');
+                } else {
+                    Alert.alert('Success! 🎉', res.message, [{ text: 'Login Now', onPress: () => navigation.navigate('UserLogin') }]);
+                }
             } else {
-                Alert.alert('Registration Failed', res.message);
+                if (Platform.OS === 'web') window.alert('Registration Failed: ' + res.message);
+                else Alert.alert('Registration Failed', res.message);
             }
         } catch (e) {
-            Alert.alert('Network Error', 'Cannot connect to server. Make sure Django is running.\n\n' + (e.message || ''));
+            const errMsg = e.response?.data?.message || e.message || 'Unknown network error';
+            if (Platform.OS === 'web') window.alert('Network Error: ' + errMsg);
+            else Alert.alert('Network Error', 'Cannot connect to server.\n\n' + errMsg);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-            <View style={styles.header}>
-                <Text style={styles.headerIcon}>📝</Text>
-                <Text style={styles.title}>Create Account</Text>
-                <Text style={styles.subtitle}>Fill in the details below</Text>
-            </View>
+            <KeyboardAvoidingView 
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+                style={{ flex: 1 }}
+            >
+                <ScrollView 
+                    contentContainerStyle={styles.container} 
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View style={styles.header}>
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+                            <Text style={styles.backText}>← Back</Text>
+                        </TouchableOpacity>
+                        <Text style={styles.headerIcon}>📝</Text>
+                        <Text style={styles.title}>Create Account</Text>
+                        <Text style={styles.subtitle}>Join the parcel health network</Text>
+                    </View>
 
-            <View style={styles.card}>
-                <Field label="Full Name *" value={form.name} onChange={set('name')} />
-                <Field label="Login ID *" value={form.loginid} onChange={set('loginid')} />
-                <Field label="Password *" value={form.password} onChange={set('password')} secure />
-                <Field label="Mobile *" value={form.mobile} onChange={set('mobile')} keyboard="phone-pad" />
-                <Field label="Email *" value={form.email} onChange={set('email')} keyboard="email-address" />
-                <Field label="Locality" value={form.locality} onChange={set('locality')} />
-                <Field label="Address" value={form.address} onChange={set('address')} />
-                <Field label="City" value={form.city} onChange={set('city')} />
-                <Field label="State" value={form.state} onChange={set('state')} />
+                    <View style={styles.card}>
+                        <Text style={styles.sectionTitle}>Required Information</Text>
+                        <Field label="Full Name *" icon="👤" value={form.name} onChange={set('name')} />
+                        <Field label="Login ID *" icon="🆔" value={form.loginid} onChange={set('loginid')} />
+                        <Field label="Password *" icon="🔒" value={form.password} onChange={set('password')} secure />
+                        <Field label="Mobile *" icon="📱" value={form.mobile} onChange={set('mobile')} keyboard="phone-pad" />
+                        <Field label="Email *" icon="📧" value={form.email} onChange={set('email')} keyboard="email-address" />
+                        
+                        <View style={styles.divider} />
+                        <Text style={styles.sectionTitle}>Optional Location Details</Text>
+                        
+                        <Field label="Locality" icon="📍" value={form.locality} onChange={set('locality')} />
+                        <Field label="City" icon="🏙️" value={form.city} onChange={set('city')} />
+                        <Field label="State" icon="🏛️" value={form.state} onChange={set('state')} />
+                        <Field label="Address" icon="🏠" value={form.address} onChange={set('address')} />
 
-                <TouchableOpacity style={styles.registerBtn} onPress={handleRegister} disabled={loading}>
-                    {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.registerBtnText}>Register  →</Text>}
-                </TouchableOpacity>
+                        <TouchableOpacity 
+                            style={[styles.registerBtn, loading && { opacity: 0.7 }]} 
+                            onPress={handleRegister} 
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color="#fff" />
+                            ) : (
+                                <Text style={styles.registerBtnText}>Complete Registration  →</Text>
+                            )}
+                        </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('UserLogin')} style={{ marginTop: 16, alignItems: 'center' }}>
-                    <Text style={{ color: COLORS.muted, fontSize: 14 }}>Already have an account? <Text style={{ color: COLORS.primaryLight, fontWeight: '700' }}>Login</Text></Text>
-                </TouchableOpacity>
-            </View>
+                        <TouchableOpacity onPress={() => navigation.navigate('UserLogin')} style={styles.loginLink}>
+                            <Text style={styles.loginLinkText}>
+                                Already have an account? <Text style={styles.loginLinkAction}>Login</Text>
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginTop: 20 }}>
-                <Text style={{ color: COLORS.muted, fontSize: 13 }}>← Back</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                    <View style={{ height: 40 }} />
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 50, paddingHorizontal: 24 },
-    header: { alignItems: 'center', marginBottom: 28 },
-    headerIcon: { fontSize: 42, marginBottom: 10 },
-    title: { fontSize: 26, fontWeight: '800', color: COLORS.text, marginBottom: 4 },
-    subtitle: { fontSize: 14, color: COLORS.muted },
-    card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 20, padding: 22, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 12 },
-    label: { fontSize: 13, fontWeight: '700', color: COLORS.muted, marginBottom: 6, marginTop: 10 },
-    input: { backgroundColor: COLORS.card2, color: COLORS.text, borderColor: COLORS.border, borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 13, fontSize: 14 },
-    inputRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-    registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 16, borderRadius: 14, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 12, elevation: 10 },
-    registerBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '700' },
+    safeArea: { flex: 1, backgroundColor: COLORS.bg },
+    container: { flexGrow: 1, paddingHorizontal: 20, paddingTop: 20 },
+    header: { alignItems: 'center', marginBottom: 24, width: '100%' },
+    backBtn: { alignSelf: 'flex-start', padding: 8, marginBottom: 5 },
+    backText: { color: COLORS.muted, fontSize: 14, fontWeight: '600' },
+    headerIcon: { fontSize: 48, marginBottom: 8 },
+    title: { fontSize: 28, fontWeight: '900', color: COLORS.text, marginBottom: 4 },
+    subtitle: { fontSize: 14, color: COLORS.muted, opacity: 0.8 },
+    card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 24, padding: 24, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 12 },
+    sectionTitle: { fontSize: 13, fontWeight: '800', color: COLORS.primaryLight, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12, marginTop: 4 },
+    divider: { height: 1, backgroundColor: COLORS.border, marginVertical: 20, opacity: 0.5 },
+    fieldContainer: { marginBottom: 16 },
+    label: { fontSize: 12, fontWeight: '700', color: COLORS.muted, marginBottom: 8, marginLeft: 4 },
+    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 12 },
+    inputIcon: { fontSize: 16, marginRight: 10, opacity: 0.7 },
+    input: { flex: 1, color: COLORS.text, paddingVertical: 14, fontSize: 15 },
+    registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 15, elevation: 8 },
+    registerBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
+    loginLink: { marginTop: 20, alignItems: 'center' },
+    loginLinkText: { color: COLORS.muted, fontSize: 14 },
+    loginLinkAction: { color: COLORS.primaryLight, fontWeight: '800' },
 });

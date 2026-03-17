@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
     View, Text, TextInput, TouchableOpacity,
     StyleSheet, StatusBar, ScrollView, ActivityIndicator, Alert,
+    KeyboardAvoidingView, Platform, SafeAreaView
 } from 'react-native';
 import { loginAdmin } from '../services/api';
 import { COLORS } from '../theme';
@@ -13,7 +14,8 @@ export default function AdminLoginScreen({ navigation }) {
 
     const handleLogin = async () => {
         if (!loginid.trim() || !password.trim()) {
-            Alert.alert('Error', 'Please enter admin credentials.');
+            if (Platform.OS === 'web') window.alert('Please enter admin credentials.');
+            else Alert.alert('Error', 'Please enter admin credentials.');
             return;
         }
         setLoading(true);
@@ -22,72 +24,103 @@ export default function AdminLoginScreen({ navigation }) {
             if (res.success) {
                 navigation.replace('AdminHome');
             } else {
-                Alert.alert('Login Failed', res.message);
+                if (Platform.OS === 'web') window.alert('Login Failed: ' + res.message);
+                else Alert.alert('Login Failed', res.message);
             }
         } catch (e) {
-            Alert.alert('Network Error', 'Cannot connect to server.\n\n' + (e.message || ''));
+            const errMsg = e.response?.data?.message || e.message || 'Unknown network error';
+            if (Platform.OS === 'web') window.alert('Network Error: ' + errMsg);
+            else Alert.alert('Network Error', 'Cannot connect to server.\n\n' + errMsg);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-            <View style={styles.header}>
-                <View style={styles.adminBadge}><Text style={{ fontSize: 40 }}>🛡️</Text></View>
-                <Text style={styles.title}>Admin Portal</Text>
-                <Text style={styles.subtitle}>Restricted Access Only</Text>
-            </View>
+            <KeyboardAvoidingView 
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+                style={{ flex: 1 }}
+            >
+                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+                    <View style={styles.header}>
+                        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+                            <Text style={styles.backText}>← Back</Text>
+                        </TouchableOpacity>
+                        <View style={styles.adminBadge}>
+                            <Text style={{ fontSize: 44 }}>🛡️</Text>
+                        </View>
+                        <Text style={styles.title}>Admin Portal</Text>
+                        <Text style={styles.subtitle}>Secure access for administrators</Text>
+                    </View>
 
-            <View style={styles.card}>
-                <View style={styles.hint}>
-                    <Text style={{ color: COLORS.warning, fontSize: 13 }}>
-                        💡 Default credentials: admin / admin
-                    </Text>
-                </View>
+                    <View style={styles.card}>
+                        <View style={styles.hint}>
+                            <Text style={{ color: COLORS.warning, fontSize: 13, fontWeight: '600' }}>
+                                💡 Default Access: admin / admin
+                            </Text>
+                        </View>
 
-                <Text style={styles.label}>Admin ID</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter admin ID"
-                    placeholderTextColor={COLORS.border}
-                    value={loginid}
-                    onChangeText={setLoginid}
-                    autoCapitalize="none"
-                />
-                <Text style={styles.label}>Password</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter password"
-                    placeholderTextColor={COLORS.border}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry
-                />
+                        <Text style={styles.label}>Admin ID</Text>
+                        <View style={styles.inputWrapper}>
+                            <Text style={styles.inputIcon}>👤</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter admin ID"
+                                placeholderTextColor={COLORS.muted}
+                                value={loginid}
+                                onChangeText={setLoginid}
+                                autoCapitalize="none"
+                            />
+                        </View>
 
-                <TouchableOpacity style={styles.loginBtn} onPress={handleLogin} disabled={loading}>
-                    {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.loginBtnText}>Admin Login  →</Text>}
-                </TouchableOpacity>
-            </View>
+                        <Text style={styles.label}>Password</Text>
+                        <View style={styles.inputWrapper}>
+                            <Text style={styles.inputIcon}>🔒</Text>
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Enter password"
+                                placeholderTextColor={COLORS.muted}
+                                value={password}
+                                onChangeText={setPassword}
+                                secureTextEntry
+                            />
+                        </View>
 
-            <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginTop: 20 }}>
-                <Text style={{ color: COLORS.muted, fontSize: 13 }}>← Back to Home</Text>
-            </TouchableOpacity>
-        </ScrollView>
+                        <TouchableOpacity 
+                            style={[styles.loginBtn, loading && { opacity: 0.7 }]} 
+                            onPress={handleLogin} 
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <ActivityIndicator color="#000" />
+                            ) : (
+                                <Text style={styles.loginBtnText}>Unlock Portal  →</Text>
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 60, paddingHorizontal: 24 },
-    header: { alignItems: 'center', marginBottom: 36 },
-    adminBadge: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.warning + '20', alignItems: 'center', justifyContent: 'center', marginBottom: 16, borderColor: COLORS.warning + '60', borderWidth: 2 },
-    title: { fontSize: 26, fontWeight: '800', color: COLORS.text, marginBottom: 6 },
-    subtitle: { fontSize: 14, color: COLORS.muted },
-    card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 20, padding: 24, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 12 },
-    hint: { backgroundColor: COLORS.warning + '18', borderRadius: 10, padding: 12, marginBottom: 16, borderColor: COLORS.warning + '40', borderWidth: 1 },
-    label: { fontSize: 13, fontWeight: '700', color: COLORS.muted, marginBottom: 8, marginTop: 12 },
-    input: { backgroundColor: COLORS.card2, color: COLORS.text, borderColor: COLORS.border, borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, marginBottom: 8, fontSize: 15 },
-    loginBtn: { backgroundColor: COLORS.warning, paddingVertical: 16, borderRadius: 14, alignItems: 'center', marginTop: 24, shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 12, elevation: 10 },
-    loginBtnText: { color: '#000', fontSize: 16, fontWeight: '800' },
+    safeArea: { flex: 1, backgroundColor: COLORS.bg },
+    container: { flexGrow: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 28, paddingVertical: 40 },
+    header: { alignItems: 'center', marginBottom: 32, width: '100%' },
+    backBtn: { position: 'absolute', top: -10, left: 0, padding: 8 },
+    backText: { color: COLORS.muted, fontSize: 14, fontWeight: '600' },
+    adminBadge: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.warning + '20', alignItems: 'center', justifyContent: 'center', marginBottom: 20, borderColor: COLORS.warning + '40', borderWidth: 2 },
+    title: { fontSize: 28, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
+    subtitle: { fontSize: 15, color: COLORS.muted, opacity: 0.8 },
+    card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 24, padding: 26, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },
+    hint: { backgroundColor: COLORS.warning + '12', borderRadius: 12, padding: 14, marginBottom: 20, borderColor: COLORS.warning + '30', borderWidth: 1 },
+    label: { fontSize: 12, fontWeight: '800', color: COLORS.muted, marginBottom: 10, marginTop: 12, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.5 },
+    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 14, marginBottom: 4 },
+    inputIcon: { fontSize: 16, marginRight: 12, opacity: 0.7 },
+    input: { flex: 1, color: COLORS.text, paddingVertical: 15, fontSize: 16 },
+    loginBtn: { backgroundColor: COLORS.warning, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 28, shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 15, elevation: 10 },
+    loginBtnText: { color: '#000', fontSize: 17, fontWeight: '800', letterSpacing: 0.5 },
 });
