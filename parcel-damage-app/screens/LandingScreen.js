@@ -20,7 +20,8 @@ export default function LandingScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-            <View style={styles.contentWrapper}>
+            
+            <View style={styles.mainContent}>
                 <Animated.View style={{ alignItems: 'center', transform: [{ scale }], opacity, marginBottom: 50 }}>
                     <View style={styles.logoCircle}>
                         <Text style={styles.logoIcon}>📦</Text>
@@ -48,11 +49,11 @@ export default function LandingScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 50, paddingHorizontal: 24 },
-    contentWrapper: { flex: 1, justifyContent: 'center', width: '100%' },
+    container: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 40, paddingHorizontal: 24 },
+    mainContent: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
     logoCircle: { width: 110, height: 110, borderRadius: 55, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center', marginBottom: 18, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.7, shadowRadius: 20, elevation: 14 },
     logoIcon: { fontSize: 52 },
-    title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: 1.2, marginBottom: 8 },
+    title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: 1.2, marginBottom: 8, textAlign: 'center' },
     subtitle: { fontSize: 15, color: COLORS.muted, textAlign: 'center' },
     buttonGroup: { width: '100%', gap: 14 },
     primaryBtn: { backgroundColor: COLORS.primary, paddingVertical: 16, borderRadius: 14, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 12, elevation: 10 },
