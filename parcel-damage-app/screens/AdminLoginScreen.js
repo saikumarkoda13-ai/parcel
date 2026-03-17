@@ -56,11 +56,6 @@ export default function AdminLoginScreen({ navigation }) {
                     </View>
 
                     <View style={styles.card}>
-                        <View style={styles.hint}>
-                            <Text style={{ color: COLORS.warning, fontSize: 13, fontWeight: '600' }}>
-                                Default Access: admin / admin
-                            </Text>
-                        </View>
 
                         <Text style={styles.label}>Admin ID</Text>
                         <View style={styles.inputWrapper}>

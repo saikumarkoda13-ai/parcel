@@ -76,13 +76,13 @@ export default function UserHomeScreen({ navigation, route }) {
                 <View style={styles.infoRow}>
                     <View style={styles.infoCard}>
                         <View style={styles.miniBadge} />
-                        <Text style={styles.infoTitle}>Deep Learning</Text>
-                        <Text style={styles.infoText}>ResNet34 Architecture</Text>
+                        <Text style={styles.infoTitle}>System Status</Text>
+                        <Text style={styles.infoText}>Encrypted & Active</Text>
                     </View>
                     <View style={styles.infoCard}>
-                        <View style={styles.miniBadge} />
-                        <Text style={styles.infoTitle}>Low Latency</Text>
-                        <Text style={styles.infoText}>Quantized Inference</Text>
+                        <View style={[styles.miniBadge, { backgroundColor: COLORS.success + '40' }]} />
+                        <Text style={styles.infoTitle}>App Version</Text>
+                        <Text style={styles.infoText}>v4.2.0 (Stable)</Text>
                     </View>
                 </View>
                 <View style={{ height: 40 }} />

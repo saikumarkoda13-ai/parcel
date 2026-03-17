@@ -71,8 +71,8 @@ export default function PredictScreen({ navigation }) {
                         <Text style={{ color: COLORS.primaryLight, fontSize: 15, fontWeight: '600' }}>← Back</Text>
                     </TouchableOpacity>
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={styles.screenTitle}>Scanner</Text>
-                        <Text style={{ color: COLORS.primaryLight, fontSize: 11, fontWeight: '700', marginTop: 2, textTransform: 'uppercase' }}>ResNet34 Model</Text>
+                        <Text style={styles.screenTitle}>System Scan</Text>
+                        <Text style={{ color: COLORS.success, fontSize: 11, fontWeight: '800', marginTop: 2, textTransform: 'uppercase' }}>Secure Protocol Active</Text>
                     </View>
                     <View style={{ width: 50 }} />
                 </View>
