@@ -2,10 +2,11 @@
 const BASE_URL = 'https://damage-4.onrender.com';
 
 import axios from 'axios';
+import { Platform } from 'react-native';
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 30000,
+  timeout: 60000, // Increased timeout for heavy image uploads
 });
 
 export const registerUser = (data) =>
@@ -22,20 +23,28 @@ export const loginAdmin = (loginid, password) =>
 // Predict — multipart form upload
 export const predictImage = async (imageUri) => {
   const formData = new FormData();
-  let filename = imageUri.split('/').pop();
+  let filename = imageUri.split('/').pop() || 'image.jpg';
   let match = /\.(\w+)$/.exec(filename);
   let type = match ? `image/${match[1] === 'jpg' ? 'jpeg' : match[1]}` : 'image/jpeg';
-  // Ensure the filename has an extension so Django processes it properly
-  if (!match) filename += '.jpg';
   
-  formData.append('image', {
-    uri: imageUri,
-    name: filename,
-    type: type,
-  });
+  if (Platform.OS === 'web') {
+    // For Web, we must fetch the URI to get a Blob/File
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+    formData.append('image', blob, filename);
+  } else {
+    // For Native (iOS/Android)
+    if (!match) filename += '.jpg';
+    formData.append('image', {
+      uri: imageUri,
+      name: filename,
+      type: type,
+    });
+  }
+
   const res = await api.post('/api/predict/', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
-    timeout: 60000,
+    timeout: 90000, // Higher timeout for predictions
   });
   return res.data;
 };
