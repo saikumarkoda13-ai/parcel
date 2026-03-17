@@ -42,7 +42,7 @@ export default function LandingScreen({ navigation }) {
                     </View>
                 </View>
 
-                <Text style={styles.footer}>Powered by ResNet34 Deep Learning</Text>
+                <Text style={styles.footer}>Standard Secure Protocol v4.2.0</Text>
             </View>
         </SafeAreaView>
     );
