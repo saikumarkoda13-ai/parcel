@@ -24,7 +24,7 @@ export default function LandingScreen({ navigation }) {
                 <View style={styles.mainContent}>
                     <Animated.View style={[styles.heroSection, { transform: [{ scale }], opacity }]}>
                         <View style={styles.logoCircle}>
-                            <Text style={styles.logoIcon}>📦</Text>
+                            <Text style={styles.logoIcon}>PD</Text>
                         </View>
                         <Text style={styles.title}>Parcel Damage Classification</Text>
                         <Text style={styles.subtitle}>AI-Powered Package Health Monitoring</Text>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     mainContent: { flex: 1, width: '100%', justifyContent: 'space-between' },
     heroSection: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     logoCircle: { width: 110, height: 110, borderRadius: 55, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center', marginBottom: 20, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.6, shadowRadius: 20, elevation: 15 },
-    logoIcon: { fontSize: 56 },
+    logoIcon: { fontSize: 32, color: COLORS.white, fontWeight: '900' },
     title: { fontSize: 32, fontWeight: '900', color: COLORS.text, letterSpacing: 1, marginBottom: 12, textAlign: 'center', lineHeight: 40 },
     subtitle: { fontSize: 16, color: COLORS.muted, textAlign: 'center', maxWidth: '80%', opacity: 0.8 },
     buttonGroup: { width: '100%', gap: 16, marginBottom: 20 },

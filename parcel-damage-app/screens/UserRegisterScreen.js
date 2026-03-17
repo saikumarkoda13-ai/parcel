@@ -79,7 +79,6 @@ export default function UserRegisterScreen({ navigation }) {
                         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
                             <Text style={styles.backText}>← Back</Text>
                         </TouchableOpacity>
-                        <Text style={styles.headerIcon}>📝</Text>
                         <Text style={styles.title}>Create Account</Text>
                         <Text style={styles.subtitle}>Join the parcel health network</Text>
                     </View>
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
     label: { fontSize: 12, fontWeight: '700', color: COLORS.muted, marginBottom: 8, marginLeft: 4 },
     inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16 },
     inputIcon: { display: 'none' },
-    input: { flex: 1, color: COLORS.text, paddingVertical: 14, fontSize: 15 },
+    input: { flex: 1, color: COLORS.text, paddingVertical: 14, fontSize: 16 },
     registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 15, elevation: 8 },
     registerBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
     loginLink: { marginTop: 20, alignItems: 'center' },

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View, Text, TouchableOpacity, StyleSheet,
-    StatusBar, ScrollView, Alert,
+    StatusBar, ScrollView, Alert, SafeAreaView, Platform
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../theme';
@@ -10,6 +10,13 @@ export default function UserHomeScreen({ navigation, route }) {
     const user = route.params?.user || {};
 
     const handleLogout = async () => {
+        if (Platform.OS === 'web') {
+            if (window.confirm('Are you sure you want to logout?')) {
+                await AsyncStorage.removeItem('user');
+                navigation.replace('Landing');
+            }
+            return;
+        }
         Alert.alert('Logout', 'Are you sure you want to logout?', [
             { text: 'Cancel', style: 'cancel' },
             {
@@ -23,88 +30,90 @@ export default function UserHomeScreen({ navigation, route }) {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-
-            {/* Header */}
-            <View style={styles.header}>
-                <View>
-                    <Text style={styles.welcome}>Hello, {user.name || 'User'} 👋</Text>
-                    <Text style={styles.subtitle}>What would you like to do today?</Text>
+            <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+                {/* Header */}
+                <View style={styles.header}>
+                    <View>
+                        <Text style={styles.welcome}>Hello, {user.name || 'User'}</Text>
+                        <Text style={styles.subtitle}>Dashboard access active</Text>
+                    </View>
+                    <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                        <Text style={styles.logoutText}>Logout</Text>
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-                    <Text style={styles.logoutText}>Logout</Text>
+
+                {/* Stats Card */}
+                <View style={styles.statsCard}>
+                    <View style={styles.statItem}>
+                        <Text style={styles.statLabel}>Login ID</Text>
+                        <Text style={styles.statValue}>{user.loginid || '—'}</Text>
+                    </View>
+                    <View style={styles.divider} />
+                    <View style={styles.statItem}>
+                        <Text style={styles.statLabel}>Email</Text>
+                        <Text style={styles.statValue} numberOfLines={1}>{user.email || '—'}</Text>
+                    </View>
+                </View>
+
+                {/* Main Action */}
+                <TouchableOpacity
+                    style={styles.predictCard}
+                    onPress={() => navigation.navigate('Predict', { user })}
+                >
+                    <View style={styles.predictIconCircle}>
+                        <View style={styles.scanBadge} />
+                    </View>
+                    <Text style={styles.predictTitle}>Open Scanning Portal</Text>
+                    <Text style={styles.predictSubtitle}>Real-time parcel classification and damage detection</Text>
+                    <View style={styles.predictBtn}>
+                        <Text style={styles.predictBtnText}>Launch Scanner  →</Text>
+                    </View>
                 </TouchableOpacity>
-            </View>
 
-            {/* Stats Card */}
-            <View style={styles.statsCard}>
-                <View style={styles.statItem}>
-                    <Text style={styles.statIcon}>📦</Text>
-                    <Text style={styles.statLabel}>Login ID</Text>
-                    <Text style={styles.statValue}>{user.loginid || '—'}</Text>
+                {/* Info Cards */}
+                <View style={styles.infoRow}>
+                    <View style={styles.infoCard}>
+                        <View style={styles.miniBadge} />
+                        <Text style={styles.infoTitle}>Deep Learning</Text>
+                        <Text style={styles.infoText}>ResNet34 Architecture</Text>
+                    </View>
+                    <View style={styles.infoCard}>
+                        <View style={styles.miniBadge} />
+                        <Text style={styles.infoTitle}>Low Latency</Text>
+                        <Text style={styles.infoText}>Quantized Inference</Text>
+                    </View>
                 </View>
-                <View style={styles.divider} />
-                <View style={styles.statItem}>
-                    <Text style={styles.statIcon}>✉️</Text>
-                    <Text style={styles.statLabel}>Email</Text>
-                    <Text style={styles.statValue} numberOfLines={1}>{user.email || '—'}</Text>
-                </View>
-            </View>
-
-            {/* Main Action */}
-            <TouchableOpacity
-                style={styles.predictCard}
-                onPress={() => navigation.navigate('Predict', { user })}
-            >
-                <View style={styles.predictIconCircle}>
-                    <Text style={{ fontSize: 48 }}>🔍</Text>
-                </View>
-                <Text style={styles.predictTitle}>Scan Parcel</Text>
-                <Text style={styles.predictSubtitle}>Upload or take a photo to check for damage</Text>
-                <View style={styles.predictBtn}>
-                    <Text style={styles.predictBtnText}>Start Prediction  →</Text>
-                </View>
-            </TouchableOpacity>
-
-            {/* Info Cards */}
-            <View style={styles.infoRow}>
-                <View style={styles.infoCard}>
-                    <Text style={{ fontSize: 28, marginBottom: 8 }}>🤖</Text>
-                    <Text style={styles.infoTitle}>AI Powered</Text>
-                    <Text style={styles.infoText}>ResNet34 deep learning model</Text>
-                </View>
-                <View style={styles.infoCard}>
-                    <Text style={{ fontSize: 28, marginBottom: 8 }}>⚡</Text>
-                    <Text style={styles.infoTitle}>Fast Results</Text>
-                    <Text style={styles.infoText}>Instant damage assessment</Text>
-                </View>
-            </View>
-        </ScrollView>
+                <View style={{ height: 40 }} />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, backgroundColor: COLORS.bg, padding: 24, paddingTop: 50 },
+    safeArea: { flex: 1, backgroundColor: COLORS.bg },
+    container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 },
-    welcome: { fontSize: 24, fontWeight: '800', color: COLORS.text },
-    subtitle: { fontSize: 14, color: COLORS.muted, marginTop: 4 },
-    logoutBtn: { backgroundColor: COLORS.card2, borderRadius: 10, paddingVertical: 8, paddingHorizontal: 14, borderColor: COLORS.border, borderWidth: 1 },
-    logoutText: { color: COLORS.danger, fontSize: 13, fontWeight: '700' },
-    statsCard: { backgroundColor: COLORS.card, borderRadius: 18, padding: 20, flexDirection: 'row', marginBottom: 24, borderColor: COLORS.border, borderWidth: 1 },
+    welcome: { fontSize: 26, fontWeight: '900', color: COLORS.text },
+    subtitle: { fontSize: 14, color: COLORS.muted, marginTop: 4, fontWeight: '600' },
+    logoutBtn: { backgroundColor: COLORS.card2 + '80', borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16, borderColor: COLORS.border, borderWidth: 1 },
+    logoutText: { color: COLORS.danger, fontSize: 13, fontWeight: '800' },
+    statsCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 24, flexDirection: 'row', marginBottom: 24, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 10, elevation: 5 },
     statItem: { flex: 1, alignItems: 'center' },
-    statIcon: { fontSize: 24, marginBottom: 6 },
-    statLabel: { fontSize: 12, color: COLORS.muted, marginBottom: 4 },
-    statValue: { fontSize: 13, fontWeight: '700', color: COLORS.text },
-    divider: { width: 1, backgroundColor: COLORS.border, marginHorizontal: 10 },
-    predictCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 12 },
-    predictIconCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.primary + '22', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-    predictTitle: { fontSize: 22, fontWeight: '800', color: COLORS.text, marginBottom: 8 },
-    predictSubtitle: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 20 },
-    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 13, paddingHorizontal: 32, borderRadius: 12, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.5, shadowRadius: 10, elevation: 8 },
-    predictBtnText: { color: COLORS.white, fontWeight: '700', fontSize: 15 },
+    statLabel: { fontSize: 12, color: COLORS.muted, marginBottom: 6, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+    statValue: { fontSize: 15, fontWeight: '800', color: COLORS.text },
+    divider: { width: 1, backgroundColor: COLORS.border, marginHorizontal: 15, opacity: 0.5 },
+    predictCard: { backgroundColor: COLORS.card, borderRadius: 28, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.25, shadowRadius: 20, elevation: 15 },
+    predictIconCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.primary + '15', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
+    scanBadge: { width: 40, height: 40, borderRadius: 8, backgroundColor: COLORS.primary + '40', borderWidth: 2, borderColor: COLORS.primary },
+    predictTitle: { fontSize: 24, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
+    predictSubtitle: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 24, lineHeight: 20 },
+    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 15, paddingHorizontal: 36, borderRadius: 16, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 10 },
+    predictBtnText: { color: COLORS.white, fontWeight: '800', fontSize: 16 },
     infoRow: { flexDirection: 'row', gap: 14 },
-    infoCard: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 16, padding: 18, borderColor: COLORS.border, borderWidth: 1 },
-    infoTitle: { fontSize: 14, fontWeight: '700', color: COLORS.text, marginBottom: 4 },
-    infoText: { fontSize: 12, color: COLORS.muted },
+    infoCard: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, borderColor: COLORS.border, borderWidth: 1 },
+    miniBadge: { width: 24, height: 4, borderRadius: 2, backgroundColor: COLORS.primaryLight + '40', marginBottom: 12 },
+    infoTitle: { fontSize: 15, fontWeight: '800', color: COLORS.text, marginBottom: 6 },
+    infoText: { fontSize: 12, color: COLORS.muted, fontWeight: '600' },
 });

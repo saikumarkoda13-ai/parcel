@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     View, Text, TouchableOpacity, StyleSheet,
-    StatusBar, ScrollView, Image, ActivityIndicator, Alert,
+    StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { predictImage } from '../services/api';
@@ -28,7 +28,8 @@ export default function PredictScreen({ navigation }) {
 
     const handlePredict = async () => {
         if (!imageUri) { 
-            Alert.alert('No Image', 'Please select or take a photo first.'); 
+            if (Platform.OS === 'web') window.alert('Please select or take a photo first.');
+            else Alert.alert('No Image', 'Please select or take a photo first.'); 
             return; 
         }
         console.log(`[PredictScreen] Starting prediction for: ${imageUri}`);
@@ -41,12 +42,14 @@ export default function PredictScreen({ navigation }) {
                 setResult(res);
             } else {
                 console.error(`[PredictScreen] Prediction Failed:`, res.message);
-                Alert.alert('Prediction Failed', res.message);
+                if (Platform.OS === 'web') window.alert('Prediction Failed: ' + res.message);
+                else Alert.alert('Prediction Failed', res.message);
             }
         } catch (e) {
             console.error(`[PredictScreen] Prediction Error:`, e);
             const errMsg = e.response?.data?.message || e.message || 'Unknown network error';
-            Alert.alert('Error', 'Cannot reach server. Details:\n\n' + errMsg);
+            if (Platform.OS === 'web') window.alert('Error: ' + errMsg);
+            else Alert.alert('Error', 'Cannot reach server. Details:\n\n' + errMsg);
         } finally {
             setLoading(false);
         }
@@ -58,112 +61,109 @@ export default function PredictScreen({ navigation }) {
         return COLORS.warning;
     };
 
-    const getResultEmoji = (prediction) => {
-        if (prediction === 'Damaged') return '⚠️';
-        if (prediction === 'Intact') return '✅';
-        return '❓';
-    };
-
     return (
-        <ScrollView contentContainerStyle={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-
-            {/* Top bar */}
-            <View style={styles.topBar}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Text style={{ color: COLORS.primaryLight, fontSize: 15, fontWeight: '600' }}>← Back</Text>
-                </TouchableOpacity>
-                <View style={{ alignItems: 'center' }}>
-                    <Text style={styles.screenTitle}>Parcel Scanner</Text>
-                    <Text style={{ color: COLORS.primaryLight, fontSize: 11, fontWeight: '700', marginTop: 2 }}>Powered by ResNet34</Text>
+            <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+                {/* Top bar */}
+                <View style={styles.topBar}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Text style={{ color: COLORS.primaryLight, fontSize: 15, fontWeight: '600' }}>← Back</Text>
+                    </TouchableOpacity>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.screenTitle}>Scanner</Text>
+                        <Text style={{ color: COLORS.primaryLight, fontSize: 11, fontWeight: '700', marginTop: 2, textTransform: 'uppercase' }}>ResNet34 Model</Text>
+                    </View>
+                    <View style={{ width: 50 }} />
                 </View>
-                <View style={{ width: 50 }} />
-            </View>
 
-            {/* Image Preview */}
-            <View style={styles.imageBox}>
-                {imageUri ? (
-                    <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
-                ) : (
-                    <View style={styles.imagePlaceholder}>
-                        <Text style={{ fontSize: 60 }}>📷</Text>
-                        <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14 }}>No image selected</Text>
-                    </View>
-                )}
-            </View>
+                {/* Image Preview */}
+                <View style={styles.imageBox}>
+                    {imageUri ? (
+                        <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
+                    ) : (
+                        <View style={styles.imagePlaceholder}>
+                            <View style={styles.placeholderIcon} />
+                            <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14 }}>No image selected</Text>
+                        </View>
+                    )}
+                </View>
 
-            {/* Pick buttons */}
-            <View style={styles.pickRow}>
-                <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
-                    <Text style={{ fontSize: 22 }}>🖼️</Text>
-                    <Text style={styles.pickBtnText}>Gallery</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
-                    <Text style={{ fontSize: 22 }}>📸</Text>
-                    <Text style={styles.pickBtnText}>Camera</Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Predict button */}
-            <TouchableOpacity
-                style={[styles.predictBtn, (!imageUri || loading) && { opacity: 0.5 }]}
-                onPress={handlePredict}
-                disabled={!imageUri || loading}
-            >
-                {loading
-                    ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>Analyzing with ResNet34...</Text></>
-                    : <Text style={styles.predictBtnText}>🔍  Analyze with ResNet34</Text>
-                }
-            </TouchableOpacity>
-
-            {/* Result Card */}
-            {result && (
-                <View style={[styles.resultCard, { borderColor: getResultColor(result.prediction) }]}>
-                    <Text style={{ fontSize: 52, textAlign: 'center' }}>{getResultEmoji(result.prediction)}</Text>
-                    <Text style={[styles.resultLabel, { color: getResultColor(result.prediction) }]}>
-                        {result.prediction}
-                    </Text>
-                    <View style={styles.confidenceRow}>
-                        <Text style={styles.confidenceLabel}>Confidence</Text>
-                        <Text style={[styles.confidenceValue, { color: getResultColor(result.prediction) }]}>
-                            {result.confidence}%
-                        </Text>
-                    </View>
-                    {/* Confidence bar */}
-                    <View style={styles.barBg}>
-                        <View style={[styles.barFill, { width: `${Math.min(result.confidence, 100)}%`, backgroundColor: getResultColor(result.prediction) }]} />
-                    </View>
-                    <TouchableOpacity 
-                        style={styles.resetBtn} 
-                        onPress={() => { setImageUri(null); setResult(null); }}
-                    >
-                        <Text style={styles.resetBtnText}>🔄  Scan Another</Text>
+                {/* Pick buttons */}
+                <View style={styles.pickRow}>
+                    <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
+                        <Text style={styles.pickBtnText}>Gallery</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
+                        <Text style={styles.pickBtnText}>Camera</Text>
                     </TouchableOpacity>
                 </View>
-            )}
-        </ScrollView>
+
+                {/* Predict button */}
+                <TouchableOpacity
+                    style={[styles.predictBtn, (!imageUri || loading) && { opacity: 0.5 }]}
+                    onPress={handlePredict}
+                    disabled={!imageUri || loading}
+                >
+                    {loading
+                        ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>Analyzing...</Text></>
+                        : <Text style={styles.predictBtnText}>Run Classification</Text>
+                    }
+                </TouchableOpacity>
+
+                {/* Result Card */}
+                {result && (
+                    <View style={[styles.resultCard, { borderColor: getResultColor(result.prediction) }]}>
+                        <Text style={styles.statusLabel}>Classification Result</Text>
+                        <Text style={[styles.resultLabel, { color: getResultColor(result.prediction) }]}>
+                            {result.prediction?.toUpperCase()}
+                        </Text>
+                        <View style={styles.confidenceRow}>
+                            <Text style={styles.confidenceLabel}>Confidence Score</Text>
+                            <Text style={[styles.confidenceValue, { color: getResultColor(result.prediction) }]}>
+                                {result.confidence}%
+                            </Text>
+                        </View>
+                        {/* Confidence bar */}
+                        <View style={styles.barBg}>
+                            <View style={[styles.barFill, { width: `${Math.min(result.confidence, 100)}%`, backgroundColor: getResultColor(result.prediction) }]} />
+                        </View>
+                        <TouchableOpacity 
+                            style={styles.resetBtn} 
+                            onPress={() => { setImageUri(null); setResult(null); }}
+                        >
+                            <Text style={styles.resetBtnText}>Scan New Parcel</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
+                <View style={{ height: 40 }} />
+            </ScrollView>
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, backgroundColor: COLORS.bg, padding: 24, paddingTop: 50 },
+    safeArea: { flex: 1, backgroundColor: COLORS.bg },
+    container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
-    screenTitle: { fontSize: 18, fontWeight: '800', color: COLORS.text },
-    imageBox: { width: '100%', height: 260, borderRadius: 20, overflow: 'hidden', marginBottom: 20, borderColor: COLORS.border, borderWidth: 1.5, backgroundColor: COLORS.card },
+    screenTitle: { fontSize: 22, fontWeight: '900', color: COLORS.text },
+    imageBox: { width: '100%', height: 260, borderRadius: 24, overflow: 'hidden', marginBottom: 20, borderColor: COLORS.border, borderWidth: 1.5, backgroundColor: COLORS.card, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 15 },
     image: { width: '100%', height: '100%' },
     imagePlaceholder: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    placeholderIcon: { width: 60, height: 60, borderRadius: 30, backgroundColor: COLORS.card2, borderColor: COLORS.border, borderWidth: 2 },
     pickRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
-    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 16, padding: 18, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1, gap: 6 },
-    pickBtnText: { color: COLORS.text, fontWeight: '700', fontSize: 14 },
-    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 17, borderRadius: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 14, elevation: 10, marginBottom: 24 },
-    predictBtnText: { color: COLORS.white, fontSize: 17, fontWeight: '800', letterSpacing: 0.5 },
-    resultCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 28, borderWidth: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 10 },
-    resultLabel: { fontSize: 32, fontWeight: '900', textAlign: 'center', marginVertical: 12, letterSpacing: 1 },
+    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 16, padding: 18, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1 },
+    pickBtnText: { color: COLORS.text, fontWeight: '700', fontSize: 16 },
+    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 14, elevation: 10, marginBottom: 24 },
+    predictBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '800', letterSpacing: 0.5 },
+    resultCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 28, borderWidth: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 12 },
+    statusLabel: { fontSize: 12, fontWeight: '800', color: COLORS.muted, textAlign: 'center', textTransform: 'uppercase', letterSpacing: 1 },
+    resultLabel: { fontSize: 36, fontWeight: '900', textAlign: 'center', marginVertical: 12, letterSpacing: 1.5 },
     confidenceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
     confidenceLabel: { fontSize: 14, color: COLORS.muted, fontWeight: '600' },
     confidenceValue: { fontSize: 20, fontWeight: '800' },
     barBg: { height: 12, backgroundColor: COLORS.card2, borderRadius: 6, overflow: 'hidden' },
     barFill: { height: '100%', borderRadius: 6 },
-    resetBtn: { marginTop: 24, paddingVertical: 12, borderRadius: 12, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
-    resetBtnText: { color: COLORS.primaryLight, fontWeight: '700', fontSize: 14 },
+    resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
+    resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
 });

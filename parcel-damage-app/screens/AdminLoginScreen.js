@@ -49,7 +49,7 @@ export default function AdminLoginScreen({ navigation }) {
                             <Text style={styles.backText}>← Back</Text>
                         </TouchableOpacity>
                         <View style={styles.adminBadge}>
-                            <Text style={{ fontSize: 44 }}>🛡️</Text>
+                            <Text style={styles.adminBadgeText}>ADMIN</Text>
                         </View>
                         <Text style={styles.title}>Admin Portal</Text>
                         <Text style={styles.subtitle}>Secure access for administrators</Text>
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     backBtn: { position: 'absolute', top: -10, left: 0, padding: 8 },
     backText: { color: COLORS.muted, fontSize: 14, fontWeight: '600' },
     adminBadge: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.warning + '20', alignItems: 'center', justifyContent: 'center', marginBottom: 20, borderColor: COLORS.warning + '40', borderWidth: 2 },
+    adminBadgeText: { color: COLORS.warning, fontWeight: '900', fontSize: 16 },
     title: { fontSize: 28, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
     subtitle: { fontSize: 15, color: COLORS.muted, opacity: 0.8 },
     card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 24, padding: 26, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },

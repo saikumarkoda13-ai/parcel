@@ -51,7 +51,7 @@ export default function UserLoginScreen({ navigation }) {
                             <Text style={styles.backText}>← Home</Text>
                         </TouchableOpacity>
                         <View style={styles.logoCircle}>
-                            <Text style={styles.headerIcon}>🔑</Text>
+                            <Text style={styles.loginShort}>LOGIN</Text>
                         </View>
                         <Text style={styles.title}>Welcome Back</Text>
                         <Text style={styles.subtitle}>Sign in to continue</Text>
@@ -113,7 +113,8 @@ const styles = StyleSheet.create({
     backBtn: { position: 'absolute', top: -10, left: 0, padding: 8 },
     backText: { color: COLORS.muted, fontSize: 14, fontWeight: '600' },
     logoCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.card2, alignItems: 'center', justifyContent: 'center', marginBottom: 20, borderColor: COLORS.border, borderWidth: 1 },
-    headerIcon: { fontSize: 42 },
+    loginShort: { color: COLORS.primaryLight, fontSize: 18, fontWeight: '900' },
+    headerIcon: { display: 'none' },
     title: { fontSize: 30, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
     subtitle: { fontSize: 16, color: COLORS.muted, opacity: 0.8 },
     card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 24, padding: 26, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },
