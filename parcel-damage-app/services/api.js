@@ -1,9 +1,5 @@
-// API service — update BASE_URL to your PC's local IP when testing on real device
-// e.g. http://192.168.1.x:8000
-const DEV_URL = 'http://192.168.236.53:8000'; 
-const PROD_URL = 'https://damage-4.onrender.com'; // Deployed Render URL
-
-const BASE_URL = process.env.NODE_ENV === 'production' ? PROD_URL : DEV_URL;
+// Live Render backend — always uses the deployed backend
+const BASE_URL = 'https://damage-4.onrender.com';
 
 import axios from 'axios';
 
