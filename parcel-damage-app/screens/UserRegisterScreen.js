@@ -28,7 +28,7 @@ const Field = ({ label, value, onChange, placeholder, secure, keyboard }) => {
 };
 
 export default function UserRegisterScreen({ navigation }) {
-    const [form, setForm] = useState({ name: '', loginid: '', password: '', mobile: '', email: '', state: '' });
+    const [form, setForm] = useState({ name: '', loginid: '', password: '', mobile: '', email: '' });
     const [loading, setLoading] = useState(false);
 
     const set = (key) => (val) => setForm(prev => ({ ...prev, [key]: val }));
@@ -91,10 +91,6 @@ export default function UserRegisterScreen({ navigation }) {
                         <Field label="Mobile *" value={form.mobile} onChange={set('mobile')} keyboard="phone-pad" />
                         <Field label="Email *" value={form.email} onChange={set('email')} keyboard="email-address" />
                         
-                        <View style={styles.divider} />
-                        <Text style={styles.sectionTitle}>Optional Location Details</Text>
-                        
-                        <Field label="State" value={form.state} onChange={set('state')} />
 
                         <TouchableOpacity 
                             style={[styles.registerBtn, loading && { opacity: 0.7 }]} 
