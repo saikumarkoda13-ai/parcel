@@ -27,18 +27,26 @@ export default function PredictScreen({ navigation }) {
     };
 
     const handlePredict = async () => {
-        if (!imageUri) { Alert.alert('No Image', 'Please select or take a photo first.'); return; }
+        if (!imageUri) { 
+            Alert.alert('No Image', 'Please select or take a photo first.'); 
+            return; 
+        }
+        console.log(`[PredictScreen] Starting prediction for: ${imageUri}`);
         setLoading(true);
         setResult(null);
         try {
             const res = await predictImage(imageUri);
+            console.log(`[PredictScreen] Prediction API Response:`, res);
             if (res.success) {
                 setResult(res);
             } else {
+                console.error(`[PredictScreen] Prediction Failed:`, res.message);
                 Alert.alert('Prediction Failed', res.message);
             }
         } catch (e) {
-            Alert.alert('Error', 'Cannot reach server. Check Django is running and IP is correct.\n\n' + (e.message || ''));
+            console.error(`[PredictScreen] Prediction Error:`, e);
+            const errMsg = e.response?.data?.message || e.message || 'Unknown network error';
+            Alert.alert('Error', 'Cannot reach server. Details:\n\n' + errMsg);
         } finally {
             setLoading(false);
         }
