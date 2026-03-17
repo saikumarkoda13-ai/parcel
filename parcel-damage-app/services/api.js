@@ -1,19 +1,5 @@
-<<<<<<< HEAD
 // PRODUCTION — Pointing to deployed Render backend
 const BASE_URL = 'https://damage-4.onrender.com';
-=======
-<<<<<<< HEAD
-// Live Render backend — always uses the deployed backend
-const BASE_URL = 'https://damage-4.onrender.com';
-=======
-// API service — update BASE_URL to your PC's local IP when testing on real device
-// e.g. http://192.168.1.x:8000
-const DEV_URL = 'http://192.168.236.53:8000'; 
-const PROD_URL = 'https://damage-4.onrender.com'; // Deployed Render URL
-
-const BASE_URL = process.env.NODE_ENV === 'production' ? PROD_URL : DEV_URL;
->>>>>>> 02d3e73b057bcff2b831d15e83f945c290fabb93
->>>>>>> cafefaa6ec9fbe18810376c7a2056891b12588c5
 
 import axios from 'axios';
 
@@ -37,7 +23,7 @@ export const loginAdmin = (loginid, password) =>
 export const predictImage = async (imageUri) => {
   const formData = new FormData();
   let filename = imageUri.split('/').pop();
-  let match = /\\.(\\w+)$/.exec(filename);
+  let match = /\.(\w+)$/.exec(filename);
   let type = match ? `image/${match[1] === 'jpg' ? 'jpeg' : match[1]}` : 'image/jpeg';
   // Ensure the filename has an extension so Django processes it properly
   if (!match) filename += '.jpg';
