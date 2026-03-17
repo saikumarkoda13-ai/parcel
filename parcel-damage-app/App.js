@@ -13,11 +13,47 @@ import AdminLoginScreen from './screens/AdminLoginScreen';
 import AdminHomeScreen from './screens/AdminHomeScreen';
 import ViewUsersScreen from './screens/ViewUsersScreen';
 
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
+
 const Stack = createStackNavigator();
+
+function WebNoZoom() {
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      // 1. Inject Viewport Meta
+      let meta = document.querySelector('meta[name="viewport"]');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = 'viewport';
+        document.head.appendChild(meta);
+      }
+      meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0';
+
+      // 2. Inject CSS to disable touch-action and selection
+      const style = document.createElement('style');
+      style.textContent = `
+        html, body { 
+          touch-action: pan-x pan-y; 
+          overscroll-behavior: none;
+          -webkit-text-size-adjust: 100%;
+          user-select: none;
+        }
+        input, textarea { 
+          font-size: 16px !important; 
+          user-select: text;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }, []);
+  return null;
+}
 
 export default function App() {
   return (
     <NavigationContainer>
+      <WebNoZoom />
       <Stack.Navigator
         initialRouteName="Landing"
         screenOptions={{
