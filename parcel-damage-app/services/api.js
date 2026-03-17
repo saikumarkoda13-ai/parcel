@@ -1,4 +1,4 @@
-// Live Render backend — always uses the deployed backend
+// PRODUCTION — Pointing to deployed Render backend
 const BASE_URL = 'https://damage-4.onrender.com';
 
 import axios from 'axios';
