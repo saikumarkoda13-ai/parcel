@@ -21,7 +21,7 @@ const Stack = createStackNavigator();
 function WebNoZoom() {
   useEffect(() => {
     if (Platform.OS === 'web') {
-      // 1. Inject Viewport Meta
+      // 1. Inject Viewport Meta (Standard)
       let meta = document.querySelector('meta[name="viewport"]');
       if (!meta) {
         meta = document.createElement('meta');
@@ -30,14 +30,24 @@ function WebNoZoom() {
       }
       meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0';
 
-      // 2. Inject CSS to disable touch-action and selection
+      // 2. Inject CSS (Hardware-level touch locking)
       const style = document.createElement('style');
       style.textContent = `
         html, body { 
           touch-action: pan-x pan-y; 
-          overscroll-behavior: none;
+          overscroll-behavior-y: contain; 
           -webkit-text-size-adjust: 100%;
           user-select: none;
+          position: fixed;
+          overflow: hidden;
+          width: 100%;
+          height: 100%;
+        }
+        #root {
+          width: 100%;
+          height: 100%;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
         }
         input, textarea { 
           font-size: 16px !important; 
@@ -45,6 +55,28 @@ function WebNoZoom() {
         }
       `;
       document.head.appendChild(style);
+
+      // 3. Prevent Multi-touch (Pinch Zoom)
+      document.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // 4. Prevent Double-tap to Zoom
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', (e) => {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+
+      // 5. iOS Specific Gesture Blocking
+      document.addEventListener('gesturestart', (e) => {
+        e.preventDefault();
+      });
     }
   }, []);
   return null;
