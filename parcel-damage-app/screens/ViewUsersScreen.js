@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
     View, Text, TouchableOpacity, StyleSheet,
-    StatusBar, FlatList, ActivityIndicator, Alert, RefreshControl,
+    StatusBar, FlatList, ActivityIndicator, Alert, RefreshControl, Platform
 } from 'react-native';
 import { getUsers, activateUser } from '../services/api';
 import { COLORS } from '../theme';
@@ -27,25 +27,30 @@ export default function ViewUsersScreen({ navigation }) {
     useEffect(() => { fetchUsers(); }, []);
 
     const handleActivate = async (uid, name) => {
-        Alert.alert('Activate User?', `Activate account for "${name}"?`, [
-            { text: 'Cancel', style: 'cancel' },
-            {
-                text: 'Activate', style: 'default',
-                onPress: async () => {
-                    try {
-                        const res = await activateUser(uid);
-                        if (res.success) {
-                            Alert.alert('Success', res.message);
-                            fetchUsers();
-                        } else {
-                            Alert.alert('Error', res.message);
-                        }
-                    } catch (e) {
-                        Alert.alert('Error', e.message || '');
-                    }
-                },
-            },
-        ]);
+        const performActivation = async () => {
+            try {
+                const res = await activateUser(uid);
+                if (res.success) {
+                    Alert.alert('Success', res.message);
+                    fetchUsers();
+                } else {
+                    Alert.alert('Error', res.message);
+                }
+            } catch (e) {
+                Alert.alert('Error', e.message || '');
+            }
+        };
+
+        if (Platform.OS === 'web') {
+            if (window.confirm(`Activate account for "${name}"?`)) {
+                performActivation();
+            }
+        } else {
+            Alert.alert('Activate User?', `Activate account for "${name}"?`, [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Activate', style: 'default', onPress: performActivation },
+            ]);
+        }
     };
 
     const renderUser = ({ item }) => (
