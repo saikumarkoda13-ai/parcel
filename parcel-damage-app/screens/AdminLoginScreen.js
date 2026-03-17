@@ -64,7 +64,6 @@ export default function AdminLoginScreen({ navigation }) {
 
                         <Text style={styles.label}>Admin ID</Text>
                         <View style={styles.inputWrapper}>
-                            <Text style={styles.inputIcon}>👤</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Enter admin ID"
@@ -77,7 +76,6 @@ export default function AdminLoginScreen({ navigation }) {
 
                         <Text style={styles.label}>Password</Text>
                         <View style={styles.inputWrapper}>
-                            <Text style={styles.inputIcon}>🔒</Text>
                             <TextInput
                                 style={styles.input}
                                 placeholder="Enter password"
@@ -118,8 +116,8 @@ const styles = StyleSheet.create({
     card: { width: '100%', backgroundColor: COLORS.card, borderRadius: 24, padding: 26, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12 },
     hint: { backgroundColor: COLORS.warning + '12', borderRadius: 12, padding: 14, marginBottom: 20, borderColor: COLORS.warning + '30', borderWidth: 1 },
     label: { fontSize: 12, fontWeight: '800', color: COLORS.muted, marginBottom: 10, marginTop: 12, marginLeft: 4, textTransform: 'uppercase', letterSpacing: 0.5 },
-    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 14, marginBottom: 4 },
-    inputIcon: { fontSize: 16, marginRight: 12, opacity: 0.7 },
+    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16, marginBottom: 4 },
+    inputIcon: { display: 'none' },
     input: { flex: 1, color: COLORS.text, paddingVertical: 15, fontSize: 16 },
     loginBtn: { backgroundColor: COLORS.warning, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 28, shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 15, elevation: 10 },
     loginBtnText: { color: '#000', fontSize: 17, fontWeight: '800', letterSpacing: 0.5 },

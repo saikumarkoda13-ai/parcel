@@ -7,12 +7,11 @@ import {
 import { registerUser } from '../services/api';
 import { COLORS } from '../theme';
 
-const Field = ({ label, value, onChange, placeholder, secure, keyboard, icon }) => {
+const Field = ({ label, value, onChange, placeholder, secure, keyboard }) => {
     return (
         <View style={styles.fieldContainer}>
             <Text style={styles.label}>{label}</Text>
             <View style={styles.inputWrapper}>
-                <Text style={styles.inputIcon}>{icon}</Text>
                 <TextInput
                     style={styles.input}
                     placeholder={placeholder || `Enter ${label.replace(' *', '')}`}
@@ -87,19 +86,19 @@ export default function UserRegisterScreen({ navigation }) {
 
                     <View style={styles.card}>
                         <Text style={styles.sectionTitle}>Required Information</Text>
-                        <Field label="Full Name *" icon="👤" value={form.name} onChange={set('name')} />
-                        <Field label="Login ID *" icon="🆔" value={form.loginid} onChange={set('loginid')} />
-                        <Field label="Password *" icon="🔒" value={form.password} onChange={set('password')} secure />
-                        <Field label="Mobile *" icon="📱" value={form.mobile} onChange={set('mobile')} keyboard="phone-pad" />
-                        <Field label="Email *" icon="📧" value={form.email} onChange={set('email')} keyboard="email-address" />
+                        <Field label="Full Name *" value={form.name} onChange={set('name')} />
+                        <Field label="Login ID *" value={form.loginid} onChange={set('loginid')} />
+                        <Field label="Password *" value={form.password} onChange={set('password')} secure />
+                        <Field label="Mobile *" value={form.mobile} onChange={set('mobile')} keyboard="phone-pad" />
+                        <Field label="Email *" value={form.email} onChange={set('email')} keyboard="email-address" />
                         
                         <View style={styles.divider} />
                         <Text style={styles.sectionTitle}>Optional Location Details</Text>
                         
-                        <Field label="Locality" icon="📍" value={form.locality} onChange={set('locality')} />
-                        <Field label="City" icon="🏙️" value={form.city} onChange={set('city')} />
-                        <Field label="State" icon="🏛️" value={form.state} onChange={set('state')} />
-                        <Field label="Address" icon="🏠" value={form.address} onChange={set('address')} />
+                        <Field label="Locality" value={form.locality} onChange={set('locality')} />
+                        <Field label="City" value={form.city} onChange={set('city')} />
+                        <Field label="State" value={form.state} onChange={set('state')} />
+                        <Field label="Address" value={form.address} onChange={set('address')} />
 
                         <TouchableOpacity 
                             style={[styles.registerBtn, loading && { opacity: 0.7 }]} 
@@ -141,8 +140,8 @@ const styles = StyleSheet.create({
     divider: { height: 1, backgroundColor: COLORS.border, marginVertical: 20, opacity: 0.5 },
     fieldContainer: { marginBottom: 16 },
     label: { fontSize: 12, fontWeight: '700', color: COLORS.muted, marginBottom: 8, marginLeft: 4 },
-    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 12 },
-    inputIcon: { fontSize: 16, marginRight: 10, opacity: 0.7 },
+    inputWrapper: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.card2, borderRadius: 14, borderColor: COLORS.border, borderWidth: 1, paddingHorizontal: 16 },
+    inputIcon: { display: 'none' },
     input: { flex: 1, color: COLORS.text, paddingVertical: 14, fontSize: 15 },
     registerBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, borderRadius: 16, alignItems: 'center', marginTop: 24, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 15, elevation: 8 },
     registerBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '800', letterSpacing: 0.5 },
