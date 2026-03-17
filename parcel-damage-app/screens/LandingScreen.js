@@ -20,24 +20,26 @@ export default function LandingScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-            <Animated.View style={{ alignItems: 'center', transform: [{ scale }], opacity }}>
-                <View style={styles.logoCircle}>
-                    <Text style={styles.logoIcon}>📦</Text>
-                </View>
-                <Text style={styles.title}>Parcel Damage Classification</Text>
-                <Text style={styles.subtitle}></Text>
-            </Animated.View>
+            <View style={styles.contentWrapper}>
+                <Animated.View style={{ alignItems: 'center', transform: [{ scale }], opacity, marginBottom: 50 }}>
+                    <View style={styles.logoCircle}>
+                        <Text style={styles.logoIcon}>📦</Text>
+                    </View>
+                    <Text style={styles.title}>Parcel Damage Classification</Text>
+                    <Text style={styles.subtitle}></Text>
+                </Animated.View>
 
-            <View style={styles.buttonGroup}>
-                <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate('UserLogin')}>
-                    <Text style={styles.primaryBtnText}>User Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.outlineBtn} onPress={() => navigation.navigate('UserRegister')}>
-                    <Text style={styles.outlineBtnText}>Register</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.adminBtn} onPress={() => navigation.navigate('AdminLogin')}>
-                    <Text style={styles.adminBtnText}>Admin Login</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonGroup}>
+                    <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate('UserLogin')}>
+                        <Text style={styles.primaryBtnText}>User Login</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.outlineBtn} onPress={() => navigation.navigate('UserRegister')}>
+                        <Text style={styles.outlineBtnText}>Register</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.adminBtn} onPress={() => navigation.navigate('AdminLogin')}>
+                        <Text style={styles.adminBtnText}>Admin Login</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <Text style={styles.footer}>Powered by ResNet34 Deep Learning</Text>
@@ -46,7 +48,8 @@ export default function LandingScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', justifyContent: 'space-between', paddingVertical: 70, paddingHorizontal: 24 },
+    container: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 50, paddingHorizontal: 24 },
+    contentWrapper: { flex: 1, justifyContent: 'center', width: '100%' },
     logoCircle: { width: 110, height: 110, borderRadius: 55, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center', marginBottom: 18, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.7, shadowRadius: 20, elevation: 14 },
     logoIcon: { fontSize: 52 },
     title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: 1.2, marginBottom: 8 },
