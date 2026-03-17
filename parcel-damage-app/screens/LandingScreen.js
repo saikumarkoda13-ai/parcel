@@ -22,7 +22,7 @@ export default function LandingScreen({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
             
             <View style={styles.mainContent}>
-                <Animated.View style={{ alignItems: 'center', transform: [{ scale }], opacity, marginBottom: 50 }}>
+                <Animated.View style={[styles.heroSection, { transform: [{ scale }], opacity }]}>
                     <View style={styles.logoCircle}>
                         <Text style={styles.logoIcon}>📦</Text>
                     </View>
@@ -50,12 +50,13 @@ export default function LandingScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: COLORS.bg, alignItems: 'center', paddingVertical: 40, paddingHorizontal: 24 },
-    mainContent: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
+    mainContent: { flex: 1, width: '100%', justifyContent: 'space-between' },
+    heroSection: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     logoCircle: { width: 110, height: 110, borderRadius: 55, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center', marginBottom: 18, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.7, shadowRadius: 20, elevation: 14 },
     logoIcon: { fontSize: 52 },
     title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: 1.2, marginBottom: 8, textAlign: 'center' },
     subtitle: { fontSize: 15, color: COLORS.muted, textAlign: 'center' },
-    buttonGroup: { width: '100%', gap: 14 },
+    buttonGroup: { width: '100%', gap: 14, marginBottom: 20 },
     primaryBtn: { backgroundColor: COLORS.primary, paddingVertical: 16, borderRadius: 14, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.5, shadowRadius: 12, elevation: 10 },
     primaryBtnText: { color: COLORS.white, fontSize: 16, fontWeight: '700', letterSpacing: 0.5 },
     outlineBtn: { borderColor: COLORS.primary, borderWidth: 2, paddingVertical: 16, borderRadius: 14, alignItems: 'center' },
