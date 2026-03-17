@@ -27,17 +27,27 @@ export default function ViewUsersScreen({ navigation }) {
     useEffect(() => { fetchUsers(); }, []);
 
     const handleActivate = async (uid, name) => {
+        console.log(`[ViewUsersScreen] Attempting to activate: ${name} (ID: ${uid})`);
+        
         const performActivation = async () => {
             try {
+                console.log(`[ViewUsersScreen] Calling activateUser API for ID: ${uid}...`);
                 const res = await activateUser(uid);
+                console.log(`[ViewUsersScreen] API Response:`, res);
+                
                 if (res.success) {
-                    Alert.alert('Success', res.message);
+                    if (Platform.OS === 'web') window.alert(res.message);
+                    else Alert.alert('Success', res.message);
                     fetchUsers();
                 } else {
-                    Alert.alert('Error', res.message);
+                    if (Platform.OS === 'web') window.alert('Error: ' + res.message);
+                    else Alert.alert('Error', res.message);
                 }
             } catch (e) {
-                Alert.alert('Error', e.message || '');
+                console.error(`[ViewUsersScreen] Activation failed:`, e);
+                const errMsg = e.response?.data?.message || e.message || 'Unknown network error';
+                if (Platform.OS === 'web') window.alert('Connection Error: ' + errMsg);
+                else Alert.alert('Error', 'Connection Error: ' + errMsg);
             }
         };
 
