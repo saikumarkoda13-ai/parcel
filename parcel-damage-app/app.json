@@ -22,6 +22,16 @@
       },
       "package": "com.saikumarjansbs.parceldamage"
     },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "disableAutomaticComponentCreation": false
+          }
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
