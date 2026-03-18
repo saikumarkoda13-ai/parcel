@@ -25,7 +25,7 @@ export default function LandingScreen({ navigation }) {
                     <Animated.View style={[styles.heroSection, { transform: [{ scale }], opacity }]}>
                         <View style={styles.logoCircle}>
                             <Image 
-                                source={require('../assets/icon.png')} 
+                                source={require('../assets/home-logo.png')} 
                                 style={styles.logoImage}
                                 resizeMode="contain"
                             />

@@ -39,8 +39,8 @@ export default function AdminLoginScreen({ navigation }) {
     return (
         <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
-            <KeyboardAvoidingView 
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={{ flex: 1 }}
             >
                 <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
@@ -56,6 +56,11 @@ export default function AdminLoginScreen({ navigation }) {
                     </View>
 
                     <View style={styles.card}>
+                        <View style={styles.hint}>
+                            <Text style={{ color: COLORS.warning, fontSize: 13, fontWeight: '600' }}>
+                                Default Access: admin / admin
+                            </Text>
+                        </View>
 
                         <Text style={styles.label}>Admin ID</Text>
                         <View style={styles.inputWrapper}>
@@ -81,9 +86,9 @@ export default function AdminLoginScreen({ navigation }) {
                             />
                         </View>
 
-                        <TouchableOpacity 
-                            style={[styles.loginBtn, loading && { opacity: 0.7 }]} 
-                            onPress={handleLogin} 
+                        <TouchableOpacity
+                            style={[styles.loginBtn, loading && { opacity: 0.7 }]}
+                            onPress={handleLogin}
                             disabled={loading}
                         >
                             {loading ? (
