@@ -24,12 +24,11 @@ export default function LandingScreen({ navigation }) {
                 <View style={styles.mainContent}>
                     <Animated.View style={[styles.heroSection, { transform: [{ scale }], opacity }]}>
                         <View style={styles.logoCircle}>
-                            <View style={styles.parcelBox}>
-                                <View style={styles.parcelFront} />
-                                <View style={styles.parcelSide} />
-                                <View style={styles.parcelTop} />
-                                <View style={styles.parcelTape} />
-                            </View>
+                            <Image 
+                                source={require('../assets/icon.png')} 
+                                style={styles.logoImage}
+                                resizeMode="contain"
+                            />
                         </View>
                         <Text style={styles.title}>Parcel Damage Classification</Text>
                     </Animated.View>
@@ -58,12 +57,8 @@ const styles = StyleSheet.create({
     container: { flex: 1, alignItems: 'center', paddingVertical: Platform.OS === 'ios' ? 10 : 30, paddingHorizontal: 28 },
     mainContent: { flex: 1, width: '100%', justifyContent: 'space-between' },
     heroSection: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    logoCircle: { width: 140, height: 140, borderRadius: 35, backgroundColor: COLORS.card2, alignItems: 'center', justifyContent: 'center', marginBottom: 30, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 15 }, shadowOpacity: 0.3, shadowRadius: 25, elevation: 20, borderColor: COLORS.border, borderWidth: 1 },
-    parcelBox: { width: 60, height: 60, position: 'relative' },
-    parcelFront: { position: 'absolute', width: 45, height: 45, backgroundColor: '#D2B48C', bottom: 0, left: 0, borderRadius: 4, zIndex: 2, borderWidth: 1, borderColor: '#B8860B' },
-    parcelSide: { position: 'absolute', width: 30, height: 45, backgroundColor: '#BC8F8F', bottom: 5, left: 35, transform: [{ skewY: '-30deg' }], borderRadius: 2, zIndex: 1, borderWidth: 1, borderColor: '#B8860B' },
-    parcelTop: { position: 'absolute', width: 45, height: 30, backgroundColor: '#DEB887', top: 0, left: 5, transform: [{ skewX: '-45deg' }], borderRadius: 2, zIndex: 1, borderWidth: 1, borderColor: '#B8860B' },
-    parcelTape: { position: 'absolute', width: 12, height: '100%', backgroundColor: '#8B4513', left: 16, opacity: 0.6, zIndex: 3 },
+    logoCircle: { width: 160, height: 160, borderRadius: 40, backgroundColor: COLORS.card2, alignItems: 'center', justifyContent: 'center', marginBottom: 30, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 15 }, shadowOpacity: 0.3, shadowRadius: 25, elevation: 20, borderColor: COLORS.border, borderWidth: 1, overflow: 'hidden' },
+    logoImage: { width: '100%', height: '100%' },
     title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: -0.5, marginBottom: 12, textAlign: 'center', lineHeight: 42, paddingHorizontal: 10 },
     buttonGroup: { width: '100%', gap: 16, marginBottom: 20 },
     primaryBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },

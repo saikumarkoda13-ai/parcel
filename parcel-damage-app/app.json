@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "08d4b428-ac57-477c-83ce-dfdd74e572d9"
+      }
+    },
+    "owner": "saikumarjansbs"
   }
 }
