@@ -1,4 +1,4 @@
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -84,28 +84,30 @@ function WebNoZoom() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <WebNoZoom />
-      <Stack.Navigator
-        initialRouteName="Landing"
-        screenOptions={{
-          headerShown: false,
-          cardStyle: { backgroundColor: '#0D0D1A' },
-          transitionSpec: {
-            open: { animation: 'timing', config: { duration: 280 } },
-            close: { animation: 'timing', config: { duration: 220 } },
-          },
-        }}
-      >
-        <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="UserLogin" component={UserLoginScreen} />
-        <Stack.Screen name="UserRegister" component={UserRegisterScreen} />
-        <Stack.Screen name="UserHome" component={UserHomeScreen} />
-        <Stack.Screen name="Predict" component={PredictScreen} />
-        <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
-        <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
-        <Stack.Screen name="ViewUsers" component={ViewUsersScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <WebNoZoom />
+        <Stack.Navigator
+          initialRouteName="Landing"
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: '#0D0D1A' },
+            transitionSpec: {
+              open: { animation: 'timing', config: { duration: 280 } },
+              close: { animation: 'timing', config: { duration: 220 } },
+            },
+          }}
+        >
+          <Stack.Screen name="Landing" component={LandingScreen} />
+          <Stack.Screen name="UserLogin" component={UserLoginScreen} />
+          <Stack.Screen name="UserRegister" component={UserRegisterScreen} />
+          <Stack.Screen name="UserHome" component={UserHomeScreen} />
+          <Stack.Screen name="Predict" component={PredictScreen} />
+          <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
+          <Stack.Screen name="AdminHome" component={AdminHomeScreen} />
+          <Stack.Screen name="ViewUsers" component={ViewUsersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
