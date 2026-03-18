@@ -4,6 +4,7 @@ import {
     StatusBar, ScrollView, Alert, SafeAreaView, Platform
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../theme';
 
 export default function UserHomeScreen({ navigation, route }) {
@@ -47,11 +48,17 @@ export default function UserHomeScreen({ navigation, route }) {
                 {/* Stats Card */}
                 <View style={styles.statsCard}>
                     <View style={styles.statItem}>
+                        <View style={styles.iconChip}>
+                            <Ionicons name="person-outline" size={16} color={COLORS.primaryLight} />
+                        </View>
                         <Text style={styles.statLabel}>Login ID</Text>
                         <Text style={styles.statValue}>{user.loginid || '—'}</Text>
                     </View>
                     <View style={styles.divider} />
                     <View style={styles.statItem}>
+                        <View style={styles.iconChip}>
+                            <Ionicons name="mail-outline" size={16} color={COLORS.primaryLight} />
+                        </View>
                         <Text style={styles.statLabel}>Email</Text>
                         <Text style={styles.statValue} numberOfLines={1}>{user.email || '—'}</Text>
                     </View>
@@ -63,7 +70,7 @@ export default function UserHomeScreen({ navigation, route }) {
                     onPress={() => navigation.navigate('Predict', { user })}
                 >
                     <View style={styles.predictIconCircle}>
-                        <View style={styles.scanBadge} />
+                        <Ionicons name="scan-outline" size={44} color={COLORS.primary} />
                     </View>
                     <Text style={styles.predictTitle}>Open Scanning Portal</Text>
                     <Text style={styles.predictSubtitle}>Real-time parcel classification and damage detection</Text>
@@ -101,12 +108,13 @@ const styles = StyleSheet.create({
     logoutText: { color: COLORS.danger, fontSize: 13, fontWeight: '800' },
     statsCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 24, flexDirection: 'row', marginBottom: 24, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 10, elevation: 5 },
     statItem: { flex: 1, alignItems: 'center' },
-    statLabel: { fontSize: 12, color: COLORS.muted, marginBottom: 6, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+    iconChip: { marginBottom: 8, backgroundColor: COLORS.card2, padding: 6, borderRadius: 10, borderColor: COLORS.border, borderWidth: 1 },
+    statLabel: { fontSize: 11, color: COLORS.muted, marginBottom: 4, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
     statValue: { fontSize: 15, fontWeight: '800', color: COLORS.text },
     divider: { width: 1, backgroundColor: COLORS.border, marginHorizontal: 15, opacity: 0.5 },
-    predictCard: { backgroundColor: COLORS.card, borderRadius: 28, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.25, shadowRadius: 20, elevation: 15 },
-    predictIconCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.primary + '15', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
-    scanBadge: { width: 40, height: 40, borderRadius: 8, backgroundColor: COLORS.primary + '40', borderWidth: 2, borderColor: COLORS.primary },
+    predictCard: { backgroundColor: COLORS.card, borderRadius: 28, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 15 },
+    predictIconCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.primary + '15', alignItems: 'center', justifyContent: 'center', marginBottom: 20, borderColor: COLORS.primary + '30', borderWidth: 2 },
+    scanBadge: { display: 'none' },
     predictTitle: { fontSize: 24, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
     predictSubtitle: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 24, lineHeight: 20 },
     predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, paddingHorizontal: 40, borderRadius: 20, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 14, elevation: 12 },

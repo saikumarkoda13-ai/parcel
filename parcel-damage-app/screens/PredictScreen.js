@@ -4,6 +4,7 @@ import {
     StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { Ionicons } from '@expo/vector-icons';
 import { predictImage } from '../services/api';
 import { COLORS } from '../theme';
 
@@ -83,7 +84,9 @@ export default function PredictScreen({ navigation }) {
                         <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
                     ) : (
                         <View style={styles.imagePlaceholder}>
-                            <View style={styles.placeholderIcon} />
+                            <View style={styles.placeholderIcon}>
+                                <Ionicons name="image-outline" size={32} color={COLORS.muted} />
+                            </View>
                             <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14 }}>No image selected</Text>
                         </View>
                     )}
@@ -92,9 +95,11 @@ export default function PredictScreen({ navigation }) {
                 {/* Pick buttons */}
                 <View style={styles.pickRow}>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
+                        <Ionicons name="images-outline" size={24} color={COLORS.primaryLight} style={{ marginBottom: 8 }} />
                         <Text style={styles.pickBtnText}>GALLERY</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
+                        <Ionicons name="camera-outline" size={24} color={COLORS.primaryLight} style={{ marginBottom: 8 }} />
                         <Text style={styles.pickBtnText}>CAMERA</Text>
                     </TouchableOpacity>
                 </View>
