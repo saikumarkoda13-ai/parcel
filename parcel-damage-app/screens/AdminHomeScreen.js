@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, TouchableOpacity, StyleSheet,
+    View, Text, TouchableOpacity, StyleSheet, Image,
     StatusBar, ScrollView, SafeAreaView, Platform
 } from 'react-native';
 import { COLORS } from '../theme';
@@ -11,8 +11,17 @@ export default function AdminHomeScreen({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
-                    <Text style={styles.badge}>Root Admin</Text>
-                    <Text style={styles.title}>System Control</Text>
+                    <View style={styles.headerTop}>
+                        <View>
+                            <Text style={styles.badge}>Root Admin</Text>
+                            <Text style={styles.title}>System Control</Text>
+                        </View>
+                        <Image 
+                            source={require('../assets/icon.png')} 
+                            style={styles.headerLogo}
+                            resizeMode="contain"
+                        />
+                    </View>
                     <Text style={styles.subtitle}>Administrative Dashboard</Text>
                 </View>
 
@@ -60,6 +69,8 @@ const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: COLORS.bg },
     container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     header: { marginBottom: 32 },
+    headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    headerLogo: { width: 60, height: 60, borderRadius: 12 },
     badge: { fontSize: 12, color: COLORS.warning, fontWeight: '800', backgroundColor: COLORS.warning + '18', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, alignSelf: 'flex-start', marginBottom: 14, letterSpacing: 0.5 },
     title: { fontSize: 32, fontWeight: '900', color: COLORS.text, marginBottom: 6 },
     subtitle: { fontSize: 15, color: COLORS.muted, fontWeight: '600' },

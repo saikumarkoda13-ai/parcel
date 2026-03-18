@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-    View, Text, TouchableOpacity, StyleSheet,
-    StatusBar, ScrollView, Alert, SafeAreaView, Platform
+    Image, StatusBar, ScrollView, Alert, SafeAreaView, Platform
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS } from '../theme';
@@ -35,13 +34,20 @@ export default function UserHomeScreen({ navigation, route }) {
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View style={styles.header}>
-                    <View>
+                    <View style={styles.headerTextContainer}>
                         <Text style={styles.welcome}>Hello, {user.name || 'User'}</Text>
                         <Text style={styles.subtitle}>Dashboard access active</Text>
                     </View>
-                    <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-                        <Text style={styles.logoutText}>LOGOUT</Text>
-                    </TouchableOpacity>
+                    <View style={styles.headerLogoContainer}>
+                        <Image 
+                            source={require('../assets/icon.png')} 
+                            style={styles.headerLogo}
+                            resizeMode="contain"
+                        />
+                        <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
+                            <Text style={styles.logoutText}>LOGOUT</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {/* Stats Card */}
@@ -95,9 +101,12 @@ const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: COLORS.bg },
     container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 28 },
+    headerTextContainer: { flex: 1 },
+    headerLogoContainer: { alignItems: 'flex-end', gap: 8 },
+    headerLogo: { width: 50, height: 50, borderRadius: 10 },
     welcome: { fontSize: 26, fontWeight: '900', color: COLORS.text },
     subtitle: { fontSize: 14, color: COLORS.muted, marginTop: 4, fontWeight: '600' },
-    logoutBtn: { backgroundColor: COLORS.card2 + '80', borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16, borderColor: COLORS.border, borderWidth: 1 },
+    logoutBtn: { backgroundColor: COLORS.card2 + '80', borderRadius: 12, paddingVertical: 8, paddingHorizontal: 12, borderColor: COLORS.border, borderWidth: 1 },
     logoutText: { color: COLORS.danger, fontSize: 13, fontWeight: '800' },
     statsCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 24, flexDirection: 'row', marginBottom: 24, borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 10, elevation: 5 },
     statItem: { flex: 1, alignItems: 'center' },
