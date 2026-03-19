@@ -4,6 +4,7 @@ import {
     Image, Animated, Easing, SafeAreaView, Platform
 } from 'react-native';
 import { useEffect, useRef } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, FONTS } from '../theme';
 
 export default function LandingScreen({ navigation }) {
@@ -34,14 +35,21 @@ export default function LandingScreen({ navigation }) {
                     </Animated.View>
 
                     <View style={styles.buttonGroup}>
-                        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate('UserLogin')}>
-                            <Text style={styles.primaryBtnText}>SIGN IN</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('UserLogin')} activeOpacity={0.8}>
+                            <LinearGradient
+                                colors={[COLORS.primary, '#6366f1']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                style={styles.primaryBtnGradient}
+                            >
+                                <Text style={styles.primaryBtnText}>SIGN IN</Text>
+                            </LinearGradient>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.outlineBtn} onPress={() => navigation.navigate('UserRegister')}>
-                            <Text style={styles.outlineBtnText}>REGISTER</Text>
+                            <Text style={styles.outlineBtnText}>REGISTER NEW ACCOUNT</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.adminBtn} onPress={() => navigation.navigate('AdminLogin')}>
-                            <Text style={styles.adminBtnText}>ADMIN PORTAL</Text>
+                            <Text style={styles.adminBtnText}>ADMIN PORTAL CONTROL</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -57,12 +65,12 @@ const styles = StyleSheet.create({
     container: { flex: 1, alignItems: 'center', paddingVertical: Platform.OS === 'ios' ? 10 : 30, paddingHorizontal: 28 },
     mainContent: { flex: 1, width: '100%', justifyContent: 'space-between' },
     heroSection: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    logoCircle: { width: 160, height: 160, borderRadius: 40, backgroundColor: COLORS.card2, alignItems: 'center', justifyContent: 'center', marginBottom: 30, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 15 }, shadowOpacity: 0.3, shadowRadius: 25, elevation: 20, borderColor: COLORS.border, borderWidth: 1, overflow: 'hidden' },
-    logoImage: { width: '100%', height: '100%' },
-    title: { fontSize: 34, fontWeight: '900', color: COLORS.text, letterSpacing: -0.5, marginBottom: 12, textAlign: 'center', lineHeight: 42, paddingHorizontal: 10 },
+    logoCircle: { width: 180, height: 180, borderRadius: 36, backgroundColor: 'rgba(255,255,255,0.03)', alignItems: 'center', justifyContent: 'center', marginBottom: 30, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 15 }, shadowOpacity: 0.4, shadowRadius: 25, elevation: 20, borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1, overflow: 'hidden' },
+    logoImage: { width: '80%', height: '80%' },
+    title: { fontSize: 36, fontWeight: '900', color: COLORS.text, letterSpacing: -1, marginBottom: 12, textAlign: 'center', lineHeight: 42, paddingHorizontal: 10 },
     buttonGroup: { width: '100%', gap: 16, marginBottom: 20 },
-    primaryBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },
-    primaryBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 0.5 },
+    primaryBtnGradient: { paddingVertical: 20, borderRadius: 20, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12 },
+    primaryBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 1 },
     outlineBtn: { borderColor: COLORS.border, borderWidth: 2, paddingVertical: 20, borderRadius: 20, alignItems: 'center', backgroundColor: 'transparent' },
     outlineBtnText: { color: COLORS.primaryLight, fontSize: 18, fontWeight: '900' },
     adminBtn: { backgroundColor: COLORS.card2, paddingVertical: 18, borderRadius: 20, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1 },
