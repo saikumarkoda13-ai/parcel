@@ -1,6 +1,5 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
-  "rootDirectory": "parcel-damage-app"
+  "buildCommand": "cd parcel-damage-app && npm install && npm run build",
+  "outputDirectory": "parcel-damage-app/dist",
+  "framework": "vite"
 }
