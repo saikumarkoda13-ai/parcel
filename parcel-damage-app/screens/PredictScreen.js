@@ -4,6 +4,7 @@ import {
     StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 import { predictImage } from '../services/api';
 import { COLORS } from '../theme';
 
@@ -94,25 +95,32 @@ export default function PredictScreen({ navigation }) {
                 {/* Pick buttons */}
                 <View style={styles.pickRow}>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
-                        <Image source={require('../assets/icon.png')} style={styles.btnIcon} resizeMode="contain" />
+                        <Image source={require('../assets/gallery-icon.png')} style={styles.btnIcon3D} resizeMode="contain" />
                         <Text style={styles.pickBtnText}>GALLERY</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
-                        <Image source={require('../assets/icon.png')} style={styles.btnIcon} resizeMode="contain" />
+                        <Image source={require('../assets/camera-icon.png')} style={styles.btnIcon3D} resizeMode="contain" />
                         <Text style={styles.pickBtnText}>CAMERA</Text>
                     </TouchableOpacity>
                 </View>
 
                 {/* Predict button */}
                 <TouchableOpacity
-                    style={[styles.predictBtn, (!imageUri || loading) && { opacity: 0.5 }]}
                     onPress={handlePredict}
                     disabled={!imageUri || loading}
+                    activeOpacity={0.8}
                 >
-                    {loading
-                        ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>ANALYZING...</Text></>
-                        : <Text style={styles.predictBtnText}>START CLASSIFICATION</Text>
-                    }
+                    <LinearGradient
+                        colors={(!imageUri || loading) ? [COLORS.card2, COLORS.card2] : [COLORS.primary, '#6366f1']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={styles.predictBtnGradient}
+                    >
+                        {loading
+                            ? <><ActivityIndicator color="#fff" style={{ marginRight: 10 }} /><Text style={styles.predictBtnText}>ANALYZING...</Text></>
+                            : <Text style={styles.predictBtnText}>START CLASSIFICATION</Text>
+                        }
+                    </LinearGradient>
                 </TouchableOpacity>
 
                 {/* Result Card */}
@@ -159,11 +167,11 @@ const styles = StyleSheet.create({
     imagePlaceholder: { flex: 1, alignItems: 'center', justifyContent: 'center' },
     placeholderLogo: { width: 60, height: 60, opacity: 0.3 },
     pickRow: { flexDirection: 'row', gap: 16, marginBottom: 30 },
-    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 22, padding: 22, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 3 },
-    btnIcon: { width: 24, height: 24, marginBottom: 8, opacity: 0.8 },
-    pickBtnText: { color: COLORS.text, fontWeight: '800', fontSize: 13, letterSpacing: 1 },
-    predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12, marginBottom: 24 },
-    predictBtnText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 1 },
+    pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 24, padding: 18, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 10, elevation: 5 },
+    btnIcon3D: { width: 50, height: 50, marginBottom: 10 },
+    pickBtnText: { color: COLORS.text, fontWeight: '900', fontSize: 13, letterSpacing: 1.5 },
+    predictBtnGradient: { paddingVertical: 22, borderRadius: 24, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.4, shadowRadius: 20, elevation: 12, marginBottom: 28 },
+    predictBtnText: { color: COLORS.white, fontSize: 17, fontWeight: '900', letterSpacing: 1 },
     resultCard: { backgroundColor: COLORS.card, borderRadius: 24, padding: 28, borderWidth: 2, shadowColor: '#000', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 12 },
     statusLabel: { fontSize: 12, fontWeight: '800', color: COLORS.muted, textAlign: 'center', textTransform: 'uppercase', letterSpacing: 1 },
     resultLabel: { fontSize: 36, fontWeight: '900', textAlign: 'center', marginVertical: 12, letterSpacing: 1.5 },

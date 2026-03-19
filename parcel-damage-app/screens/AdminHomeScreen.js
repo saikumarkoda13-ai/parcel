@@ -3,6 +3,7 @@ import {
     View, Text, TouchableOpacity, StyleSheet, Image,
     StatusBar, ScrollView, SafeAreaView, Platform
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '../theme';
 
 export default function AdminHomeScreen({ navigation }) {
@@ -12,7 +13,12 @@ export default function AdminHomeScreen({ navigation }) {
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
                     <View style={styles.headerTop}>
-                        <Image source={require('../assets/icon.png')} style={styles.headerLogo} resizeMode="contain" />
+                        <LinearGradient
+                            colors={[COLORS.warning, COLORS.danger]}
+                            style={styles.logoBadgeGradient}
+                        >
+                            <Image source={require('../assets/icon.png')} style={styles.adminLogo} resizeMode="contain" />
+                        </LinearGradient>
                         <Text style={styles.badge}>Root Admin</Text>
                     </View>
                     <Text style={styles.title}>System Control</Text>
@@ -64,8 +70,9 @@ const styles = StyleSheet.create({
     container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     header: { marginBottom: 32 },
     headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-    headerLogo: { width: 50, height: 50, borderRadius: 12, backgroundColor: COLORS.card2, borderColor: COLORS.border, borderWidth: 1 },
-    badge: { fontSize: 12, color: COLORS.warning, fontWeight: '800', backgroundColor: COLORS.warning + '18', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, letterSpacing: 0.5 },
+    logoBadgeGradient: { width: 56, height: 56, borderRadius: 16, padding: 8, alignItems: 'center', justifyContent: 'center', shadowColor: COLORS.warning, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.3, shadowRadius: 12, elevation: 8 },
+    adminLogo: { width: '100%', height: '100%' },
+    badge: { fontSize: 12, color: COLORS.warning, fontWeight: '900', backgroundColor: COLORS.warning + '18', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 14, letterSpacing: 0.8, textTransform: 'uppercase' },
     title: { fontSize: 32, fontWeight: '900', color: COLORS.text, marginBottom: 6 },
     subtitle: { fontSize: 15, color: COLORS.muted, fontWeight: '600' },
     grid: { gap: 18, marginBottom: 24 },
