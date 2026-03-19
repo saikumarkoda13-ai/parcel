@@ -16,14 +16,14 @@ export default function PredictScreen({ navigation }) {
     const pickFromGallery = async () => {
         const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow gallery access to upload parcel images.'); return; }
-        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.9 });
+        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
     const pickFromCamera = async () => {
         const perm = await ImagePicker.requestCameraPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow camera access to take photos.'); return; }
-        const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
+        const res = await ImagePicker.launchCameraAsync({ quality: 0.7 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
@@ -61,6 +61,22 @@ export default function PredictScreen({ navigation }) {
         if (prediction === 'Intact') return COLORS.success;
         return COLORS.warning;
     };
+
+    // Simulated Progress Logic
+    const [progress, setProgress] = useState(0);
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            setProgress(0);
+            interval = setInterval(() => {
+                setProgress(prev => (prev < 90 ? prev + (90 - prev) * 0.1 : prev));
+            }, 500);
+        } else {
+            setProgress(0);
+            clearInterval(interval);
+        }
+        return () => clearInterval(interval);
+    }, [loading]);
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -148,6 +164,26 @@ export default function PredictScreen({ navigation }) {
                         </TouchableOpacity>
                     </View>
                 )}
+
+                {/* Loading Overlay */}
+                {loading && (
+                    <View style={styles.loadingOverlay}>
+                        <LinearGradient
+                            colors={['rgba(15, 23, 42, 0.9)', 'rgba(30, 41, 59, 0.95)']}
+                            style={styles.loadingBlur}
+                        >
+                            <View style={styles.pulseContainer}>
+                                <Image source={require('../assets/icon.png')} style={styles.loadingLogo} resizeMode="contain" />
+                            </View>
+                            <Text style={styles.loadingText}>AI ANALYZING PARCEL...</Text>
+                            <View style={styles.progressBarBg}>
+                                <View style={[styles.progressBarFill, { width: `${progress}%` }]} />
+                            </View>
+                            <Text style={styles.progressSubtext}>Decrypting damage patterns... {Math.round(progress)}%</Text>
+                        </LinearGradient>
+                    </View>
+                )}
+                
                 <View style={{ height: 40 }} />
             </ScrollView>
         </SafeAreaView>
@@ -182,4 +218,14 @@ const styles = StyleSheet.create({
     barFill: { height: '100%', borderRadius: 6 },
     resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
     resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
+    
+    // Loading Overlay Styles
+    loadingOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 1000, justifyContent: 'center', alignItems: 'center' },
+    loadingBlur: { width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', padding: 40 },
+    pulseContainer: { width: 120, height: 120, borderRadius: 30, backgroundColor: 'rgba(255,255,255,0.05)', alignItems: 'center', justifyContent: 'center', marginBottom: 30, borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1 },
+    loadingLogo: { width: 80, height: 80 },
+    loadingText: { color: COLORS.white, fontSize: 18, fontWeight: '900', letterSpacing: 2, marginBottom: 20 },
+    progressBarBg: { width: '100%', height: 6, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 3, overflow: 'hidden', marginBottom: 12 },
+    progressBarFill: { height: '100%', backgroundColor: COLORS.primaryLight },
+    progressSubtext: { color: COLORS.muted, fontSize: 12, fontWeight: '600', letterSpacing: 0.5 },
 });
