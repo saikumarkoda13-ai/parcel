@@ -70,7 +70,7 @@ export default function UserHomeScreen({ navigation, route }) {
                     onPress={() => navigation.navigate('Predict', { user })}
                 >
                     <View style={styles.predictIconCircle}>
-                        <Ionicons name="scan-outline" size={44} color={COLORS.primary} />
+                        <Ionicons name="scan-outline" size={48} color={COLORS.primary} />
                     </View>
                     <Text style={styles.predictTitle}>Open Scanning Portal</Text>
                     <Text style={styles.predictSubtitle}>Real-time parcel classification and damage detection</Text>
@@ -112,9 +112,8 @@ const styles = StyleSheet.create({
     statLabel: { fontSize: 11, color: COLORS.muted, marginBottom: 4, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
     statValue: { fontSize: 15, fontWeight: '800', color: COLORS.text },
     divider: { width: 1, backgroundColor: COLORS.border, marginHorizontal: 15, opacity: 0.5 },
-    predictCard: { backgroundColor: COLORS.card, borderRadius: 28, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 15 },
+    predictCard: { backgroundColor: COLORS.card, borderRadius: 28, padding: 30, alignItems: 'center', marginBottom: 24, borderColor: COLORS.primary, borderWidth: 1.5, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 12 }, shadowOpacity: 0.25, shadowRadius: 20, elevation: 15 },
     predictIconCircle: { width: 90, height: 90, borderRadius: 45, backgroundColor: COLORS.primary + '15', alignItems: 'center', justifyContent: 'center', marginBottom: 20, borderColor: COLORS.primary + '30', borderWidth: 2 },
-    scanBadge: { display: 'none' },
     predictTitle: { fontSize: 24, fontWeight: '900', color: COLORS.text, marginBottom: 8 },
     predictSubtitle: { fontSize: 14, color: COLORS.muted, textAlign: 'center', marginBottom: 24, lineHeight: 20 },
     predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 18, paddingHorizontal: 40, borderRadius: 20, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 14, elevation: 12 },

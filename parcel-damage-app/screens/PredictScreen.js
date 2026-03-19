@@ -16,14 +16,14 @@ export default function PredictScreen({ navigation }) {
     const pickFromGallery = async () => {
         const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow gallery access to upload parcel images.'); return; }
-        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.9 });
+        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
     const pickFromCamera = async () => {
         const perm = await ImagePicker.requestCameraPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow camera access to take photos.'); return; }
-        const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
+        const res = await ImagePicker.launchCameraAsync({ quality: 0.7 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
@@ -85,9 +85,9 @@ export default function PredictScreen({ navigation }) {
                     ) : (
                         <View style={styles.imagePlaceholder}>
                             <View style={styles.placeholderIcon}>
-                                <Ionicons name="image-outline" size={32} color={COLORS.muted} />
+                                <Ionicons name="cube-outline" size={36} color={COLORS.primaryLight} />
                             </View>
-                            <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14 }}>No image selected</Text>
+                            <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14, fontWeight: '700' }}>No parcel selected</Text>
                         </View>
                     )}
                 </View>
@@ -95,11 +95,11 @@ export default function PredictScreen({ navigation }) {
                 {/* Pick buttons */}
                 <View style={styles.pickRow}>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
-                        <Ionicons name="images-outline" size={24} color={COLORS.primaryLight} style={{ marginBottom: 8 }} />
+                        <Ionicons name="image-outline" size={26} color={COLORS.primaryLight} style={{ marginBottom: 10 }} />
                         <Text style={styles.pickBtnText}>GALLERY</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
-                        <Ionicons name="camera-outline" size={24} color={COLORS.primaryLight} style={{ marginBottom: 8 }} />
+                        <Ionicons name="camera-outline" size={26} color={COLORS.primaryLight} style={{ marginBottom: 10 }} />
                         <Text style={styles.pickBtnText}>CAMERA</Text>
                     </TouchableOpacity>
                 </View>
