@@ -4,7 +4,6 @@ import {
     StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { Ionicons } from '@expo/vector-icons';
 import { predictImage } from '../services/api';
 import { COLORS } from '../theme';
 
@@ -16,14 +15,14 @@ export default function PredictScreen({ navigation }) {
     const pickFromGallery = async () => {
         const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow gallery access to upload parcel images.'); return; }
-        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.7 });
+        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.9 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
     const pickFromCamera = async () => {
         const perm = await ImagePicker.requestCameraPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow camera access to take photos.'); return; }
-        const res = await ImagePicker.launchCameraAsync({ quality: 0.7 });
+        const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
@@ -84,22 +83,18 @@ export default function PredictScreen({ navigation }) {
                         <Image source={{ uri: imageUri }} style={styles.image} resizeMode="cover" />
                     ) : (
                         <View style={styles.imagePlaceholder}>
-                            <View style={styles.placeholderIcon}>
-                                <Ionicons name="cube-outline" size={36} color={COLORS.primaryLight} />
-                            </View>
-                            <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14, fontWeight: '700' }}>No parcel selected</Text>
-                        </View>
+                        <Image source={require('../assets/icon.png')} style={styles.placeholderLogo} resizeMode="contain" />
+                        <Text style={{ color: COLORS.muted, marginTop: 12, fontSize: 14 }}>No image selected</Text>
+                    </View>
                     )}
                 </View>
 
                 {/* Pick buttons */}
                 <View style={styles.pickRow}>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromGallery}>
-                        <Ionicons name="image-outline" size={26} color={COLORS.primaryLight} style={{ marginBottom: 10 }} />
                         <Text style={styles.pickBtnText}>GALLERY</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.pickBtn} onPress={pickFromCamera}>
-                        <Ionicons name="camera-outline" size={26} color={COLORS.primaryLight} style={{ marginBottom: 10 }} />
                         <Text style={styles.pickBtnText}>CAMERA</Text>
                     </TouchableOpacity>
                 </View>
@@ -155,8 +150,8 @@ const styles = StyleSheet.create({
     imageBox: { width: '100%', height: 260, borderRadius: 24, overflow: 'hidden', marginBottom: 20, borderColor: COLORS.border, borderWidth: 1.5, backgroundColor: COLORS.card, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.2, shadowRadius: 15 },
     image: { width: '100%', height: '100%' },
     imagePlaceholder: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-    placeholderIcon: { width: 60, height: 60, borderRadius: 30, backgroundColor: COLORS.card2, borderColor: COLORS.border, borderWidth: 2 },
-    pickRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
+    placeholderLogo: { width: 60, height: 60, opacity: 0.3 },
+    pickRow: { flexDirection: 'row', gap: 16, marginBottom: 30 },
     pickBtn: { flex: 1, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, alignItems: 'center', borderColor: COLORS.border, borderWidth: 1 },
     pickBtnText: { color: COLORS.text, fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
     predictBtn: { backgroundColor: COLORS.primary, paddingVertical: 20, borderRadius: 20, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.4, shadowRadius: 18, elevation: 12, marginBottom: 24 },

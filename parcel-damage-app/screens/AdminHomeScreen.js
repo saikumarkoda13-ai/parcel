@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, TouchableOpacity, StyleSheet,
+    View, Text, TouchableOpacity, StyleSheet, Image,
     StatusBar, ScrollView, SafeAreaView, Platform
 } from 'react-native';
 import { COLORS } from '../theme';
@@ -11,7 +11,10 @@ export default function AdminHomeScreen({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor={COLORS.bg} />
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={styles.header}>
-                    <Text style={styles.badge}>Root Admin</Text>
+                    <View style={styles.headerTop}>
+                        <Image source={require('../assets/icon.png')} style={styles.headerLogo} resizeMode="contain" />
+                        <Text style={styles.badge}>Root Admin</Text>
+                    </View>
                     <Text style={styles.title}>System Control</Text>
                     <Text style={styles.subtitle}>Administrative Dashboard</Text>
                 </View>
@@ -60,7 +63,9 @@ const styles = StyleSheet.create({
     safeArea: { flex: 1, backgroundColor: COLORS.bg },
     container: { flexGrow: 1, padding: 24, paddingVertical: 20 },
     header: { marginBottom: 32 },
-    badge: { fontSize: 12, color: COLORS.warning, fontWeight: '800', backgroundColor: COLORS.warning + '18', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, alignSelf: 'flex-start', marginBottom: 14, letterSpacing: 0.5 },
+    headerTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+    headerLogo: { width: 50, height: 50, borderRadius: 12, backgroundColor: COLORS.card2, borderColor: COLORS.border, borderWidth: 1 },
+    badge: { fontSize: 12, color: COLORS.warning, fontWeight: '800', backgroundColor: COLORS.warning + '18', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, letterSpacing: 0.5 },
     title: { fontSize: 32, fontWeight: '900', color: COLORS.text, marginBottom: 6 },
     subtitle: { fontSize: 15, color: COLORS.muted, fontWeight: '600' },
     grid: { gap: 18, marginBottom: 24 },
