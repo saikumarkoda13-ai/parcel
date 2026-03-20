@@ -113,20 +113,36 @@ export default function PredictScreen({ navigation }) {
 
                 {/* Result Card */}
                 {result && (
-                    <View style={[styles.resultCard, { borderColor: getResultColor(result.prediction) }]}>
+                    <View style={[styles.resultCard, { borderColor: result.color || getResultColor(result.prediction) }]}>
                         <Text style={styles.statusLabel}>Classification Result</Text>
-                        <Text style={[styles.resultLabel, { color: getResultColor(result.prediction) }]}>
+                        <Text style={[styles.resultLabel, { color: result.color || getResultColor(result.prediction) }]}>
                             {result.prediction?.toUpperCase()}
                         </Text>
+                        
+                        {/* Severity & Decision */}
+                        <View style={styles.detailsBox}>
+                            <View style={styles.detailRow}>
+                                <Text style={styles.detailTitle}>Severity Stage:</Text>
+                                <View style={styles.badge}>
+                                    <View style={[styles.dot, { backgroundColor: result.color }]} />
+                                    <Text style={[styles.badgeText, { color: result.color }]}>{result.severity}</Text>
+                                </View>
+                            </View>
+                            <View style={[styles.decisionBox, { backgroundColor: result.color + '15', borderColor: result.color }]}>
+                                <Text style={[styles.decisionLabel, { color: result.color }]}>RECOMMENDED DECISION:</Text>
+                                <Text style={[styles.decisionText, { color: result.color }]}>“{result.decision}”</Text>
+                            </View>
+                        </View>
+
                         <View style={styles.confidenceRow}>
                             <Text style={styles.confidenceLabel}>Confidence Score</Text>
-                            <Text style={[styles.confidenceValue, { color: getResultColor(result.prediction) }]}>
+                            <Text style={[styles.confidenceValue, { color: result.color || getResultColor(result.prediction) }]}>
                                 {result.confidence}%
                             </Text>
                         </View>
                         {/* Confidence bar */}
                         <View style={styles.barBg}>
-                            <View style={[styles.barFill, { width: `${Math.min(result.confidence, 100)}%`, backgroundColor: getResultColor(result.prediction) }]} />
+                            <View style={[styles.barFill, { width: `${Math.min(result.confidence, 100)}%`, backgroundColor: result.color || getResultColor(result.prediction) }]} />
                         </View>
                         <TouchableOpacity
                             style={styles.resetBtn}
@@ -166,4 +182,13 @@ const styles = StyleSheet.create({
     barFill: { height: '100%', borderRadius: 6 },
     resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
     resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
+    detailsBox: { marginVertical: 18, backgroundColor: COLORS.card2, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: COLORS.border },
+    detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+    detailTitle: { fontSize: 15, color: COLORS.text, fontWeight: '700' },
+    badge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.bg, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, borderWidth: 1, borderColor: COLORS.border },
+    dot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
+    badgeText: { fontSize: 14, fontWeight: '900', textTransform: 'uppercase' },
+    decisionBox: { marginTop: 4, padding: 14, borderRadius: 12, borderWidth: 1, borderStyle: 'dashed', alignItems: 'center' },
+    decisionLabel: { fontSize: 11, fontWeight: '900', marginBottom: 4, letterSpacing: 0.5 },
+    decisionText: { fontSize: 18, fontWeight: '900', textAlign: 'center' },
 });
