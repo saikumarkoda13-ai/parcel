@@ -122,9 +122,9 @@ export default function PredictScreen({ navigation }) {
                         {/* Severity & Decision */}
                         <View style={styles.detailsBox}>
                             <View style={styles.detailRow}>
-                                <Text style={styles.detailTitle}>Severity Stage:</Text>
-                                <View style={[styles.badge, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '20', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
-                                    <View style={[styles.dot, { backgroundColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6'), shadowColor: result.color || '#000', shadowOpacity: 0.8, shadowRadius: 5 }]} />
+                                <Text style={styles.detailTitle}>Severity Level:</Text>
+                                <View style={[styles.badge, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '25', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                                    <View style={[styles.dot, { backgroundColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6'), shadowColor: result.color || '#000', shadowOpacity: 1, shadowRadius: 10, elevation: 5 }]} />
                                     <Text style={[styles.badgeText, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
                                         { (result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')) === 'Safe' ? '🟢 ' : (result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')) === 'Moderate' ? '🟡 ' : '🔴 ' }
                                         {result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')}
@@ -132,7 +132,7 @@ export default function PredictScreen({ navigation }) {
                                 </View>
                             </View>
                             
-                            <View style={[styles.decisionBox, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '10', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                            <View style={[styles.decisionBox, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '15', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
                                 <Text style={[styles.decisionLabel, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>RECOMMENDED DECISION:</Text>
                                 <Text style={[styles.decisionText, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
                                     “{result.decision || (result.prediction === 'Intact' ? 'Deliver normally' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Reject / Return parcel' : 'Handle carefully') : 'N/A')}”
@@ -188,13 +188,13 @@ const styles = StyleSheet.create({
     barFill: { height: '100%', borderRadius: 6 },
     resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
     resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
-    detailsBox: { marginVertical: 20, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, borderWidth: 1.5, borderColor: COLORS.border, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 5 },
-    detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-    detailTitle: { fontSize: 16, color: COLORS.muted, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.5 },
-    badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 12, borderWidth: 2 },
-    dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10, elevation: 5 },
-    badgeText: { fontSize: 18, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 0.5 },
-    decisionBox: { marginTop: 6, padding: 18, borderRadius: 16, borderWidth: 2, borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center' },
-    decisionLabel: { fontSize: 12, fontWeight: '900', marginBottom: 8, letterSpacing: 1, opacity: 0.8 },
-    decisionText: { fontSize: 22, fontWeight: '900', textAlign: 'center', fontStyle: 'italic', letterSpacing: 0.5 },
+    detailsBox: { marginVertical: 22, backgroundColor: COLORS.card2, borderRadius: 24, padding: 22, borderWidth: 2, borderColor: COLORS.border, shadowColor: '#000', shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.15, shadowRadius: 10, elevation: 8 },
+    detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
+    detailTitle: { fontSize: 17, color: COLORS.muted, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 1 },
+    badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14, borderWidth: 2.5 },
+    dot: { width: 14, height: 14, borderRadius: 7, marginRight: 12 },
+    badgeText: { fontSize: 20, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 1 },
+    decisionBox: { marginTop: 8, padding: 22, borderRadius: 20, borderWidth: 2.5, borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center' },
+    decisionLabel: { fontSize: 13, fontWeight: '900', marginBottom: 10, letterSpacing: 1.5, opacity: 0.9 },
+    decisionText: { fontSize: 26, fontWeight: '900', textAlign: 'center', fontStyle: 'italic', letterSpacing: 0.5, lineHeight: 32 },
 });
