@@ -56,3 +56,7 @@ export const getUsers = () =>
 // Activate user (admin)
 export const activateUser = (uid) =>
   api.post('/api/activate-user/', { uid }).then(r => r.data);
+
+// Get Dashboard Stats (admin)
+export const getStats = () =>
+  api.get('/api/stats/').then(r => r.data);
