@@ -122,15 +122,21 @@ export default function PredictScreen({ navigation }) {
                         {/* Severity & Decision */}
                         <View style={styles.detailsBox}>
                             <View style={styles.detailRow}>
-                                <Text style={styles.detailTitle}>Severity Stage:</Text>
-                                <View style={styles.badge}>
-                                    <View style={[styles.dot, { backgroundColor: result.color }]} />
-                                    <Text style={[styles.badgeText, { color: result.color }]}>{result.severity}</Text>
+                                <Text style={styles.detailTitle}>Injury / Severity Stage:</Text>
+                                <View style={[styles.badge, { backgroundColor: result.color ? (result.color + '20') : COLORS.bg, borderColor: result.color || COLORS.border }]}>
+                                    <View style={[styles.dot, { backgroundColor: result.color || COLORS.warning, shadowColor: result.color, shadowOpacity: 0.8, shadowRadius: 5 }]} />
+                                    <Text style={[styles.badgeText, { color: result.color || COLORS.text }]}>
+                                        {result.severity === 'Safe' ? '🟢 ' : result.severity === 'Moderate' ? '🟡 ' : result.severity === 'Severe' ? '🔴 ' : ''}
+                                        {result.severity || (result.prediction === 'Intact' ? 'Safe' : 'Unknown')}
+                                    </Text>
                                 </View>
                             </View>
-                            <View style={[styles.decisionBox, { backgroundColor: result.color + '15', borderColor: result.color }]}>
-                                <Text style={[styles.decisionLabel, { color: result.color }]}>RECOMMENDED DECISION:</Text>
-                                <Text style={[styles.decisionText, { color: result.color }]}>“{result.decision}”</Text>
+                            
+                            <View style={[styles.decisionBox, { backgroundColor: (result.color || COLORS.primary) + '10', borderColor: result.color || COLORS.border }]}>
+                                <Text style={[styles.decisionLabel, { color: result.color || COLORS.muted }]}>RECOMMENDED DECISION:</Text>
+                                <Text style={[styles.decisionText, { color: result.color || COLORS.text }]}>
+                                    “{result.decision || (result.prediction === 'Intact' ? 'Deliver normally' : 'N/A')}”
+                                </Text>
                             </View>
                         </View>
 
@@ -182,13 +188,13 @@ const styles = StyleSheet.create({
     barFill: { height: '100%', borderRadius: 6 },
     resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
     resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
-    detailsBox: { marginVertical: 18, backgroundColor: COLORS.card2, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: COLORS.border },
-    detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-    detailTitle: { fontSize: 15, color: COLORS.text, fontWeight: '700' },
-    badge: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.bg, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 10, borderWidth: 1, borderColor: COLORS.border },
-    dot: { width: 10, height: 10, borderRadius: 5, marginRight: 8 },
-    badgeText: { fontSize: 14, fontWeight: '900', textTransform: 'uppercase' },
-    decisionBox: { marginTop: 4, padding: 14, borderRadius: 12, borderWidth: 1, borderStyle: 'dashed', alignItems: 'center' },
-    decisionLabel: { fontSize: 11, fontWeight: '900', marginBottom: 4, letterSpacing: 0.5 },
-    decisionText: { fontSize: 18, fontWeight: '900', textAlign: 'center' },
+    detailsBox: { marginVertical: 20, backgroundColor: COLORS.card2, borderRadius: 20, padding: 20, borderWidth: 1.5, borderColor: COLORS.border, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 8, elevation: 5 },
+    detailRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+    detailTitle: { fontSize: 16, color: COLORS.muted, fontWeight: '800', textTransform: 'uppercase', letterSpacing: 0.5 },
+    badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 12, borderWidth: 2 },
+    dot: { width: 12, height: 12, borderRadius: 6, marginRight: 10, elevation: 5 },
+    badgeText: { fontSize: 18, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 0.5 },
+    decisionBox: { marginTop: 6, padding: 18, borderRadius: 16, borderWidth: 2, borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center' },
+    decisionLabel: { fontSize: 12, fontWeight: '900', marginBottom: 8, letterSpacing: 1, opacity: 0.8 },
+    decisionText: { fontSize: 22, fontWeight: '900', textAlign: 'center', fontStyle: 'italic', letterSpacing: 0.5 },
 });
