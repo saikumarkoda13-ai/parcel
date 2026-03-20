@@ -123,19 +123,19 @@ export default function PredictScreen({ navigation }) {
                         <View style={styles.detailsBox}>
                             <View style={styles.detailRow}>
                                 <Text style={styles.detailTitle}>Severity Stage:</Text>
-                                <View style={[styles.badge, { backgroundColor: result.color ? (result.color + '20') : COLORS.bg, borderColor: result.color || COLORS.border }]}>
-                                    <View style={[styles.dot, { backgroundColor: result.color || COLORS.warning, shadowColor: result.color, shadowOpacity: 0.8, shadowRadius: 5 }]} />
-                                    <Text style={[styles.badgeText, { color: result.color || COLORS.text }]}>
-                                        {result.severity === 'Safe' ? '🟢 ' : result.severity === 'Moderate' ? '🟡 ' : result.severity === 'Severe' ? '🔴 ' : ''}
-                                        {result.severity || (result.prediction === 'Intact' ? 'Safe' : 'Unknown')}
+                                <View style={[styles.badge, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '20', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                                    <View style={[styles.dot, { backgroundColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6'), shadowColor: result.color || '#000', shadowOpacity: 0.8, shadowRadius: 5 }]} />
+                                    <Text style={[styles.badgeText, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                                        { (result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')) === 'Safe' ? '🟢 ' : (result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')) === 'Moderate' ? '🟡 ' : '🔴 ' }
+                                        {result.severity || (result.prediction === 'Intact' ? 'Safe' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Severe' : 'Moderate') : 'Unknown')}
                                     </Text>
                                 </View>
                             </View>
                             
-                            <View style={[styles.decisionBox, { backgroundColor: (result.color || COLORS.primary) + '10', borderColor: result.color || COLORS.border }]}>
-                                <Text style={[styles.decisionLabel, { color: result.color || COLORS.muted }]}>RECOMMENDED DECISION:</Text>
-                                <Text style={[styles.decisionText, { color: result.color || COLORS.text }]}>
-                                    “{result.decision || (result.prediction === 'Intact' ? 'Deliver normally' : 'N/A')}”
+                            <View style={[styles.decisionBox, { backgroundColor: (result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6')) + '10', borderColor: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                                <Text style={[styles.decisionLabel, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>RECOMMENDED DECISION:</Text>
+                                <Text style={[styles.decisionText, { color: result.color || (result.prediction === 'Intact' ? '#2ecc71' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? '#e74c3c' : '#f1c40f') : '#95a5a6') }]}>
+                                    “{result.decision || (result.prediction === 'Intact' ? 'Deliver normally' : result.prediction === 'Damaged' ? (result.confidence >= 60 ? 'Reject / Return parcel' : 'Handle carefully') : 'N/A')}”
                                 </Text>
                             </View>
                         </View>
