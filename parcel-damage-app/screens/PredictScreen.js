@@ -122,7 +122,7 @@ export default function PredictScreen({ navigation }) {
                         {/* Severity & Decision */}
                         <View style={styles.detailsBox}>
                             <View style={styles.detailRow}>
-                                <Text style={styles.detailTitle}>Injury / Severity Stage:</Text>
+                                <Text style={styles.detailTitle}>Severity Stage:</Text>
                                 <View style={[styles.badge, { backgroundColor: result.color ? (result.color + '20') : COLORS.bg, borderColor: result.color || COLORS.border }]}>
                                     <View style={[styles.dot, { backgroundColor: result.color || COLORS.warning, shadowColor: result.color, shadowOpacity: 0.8, shadowRadius: 5 }]} />
                                     <Text style={[styles.badgeText, { color: result.color || COLORS.text }]}>
