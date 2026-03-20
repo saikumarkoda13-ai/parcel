@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
     View, Text, TouchableOpacity, StyleSheet,
-    StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform
+    StatusBar, ScrollView, Image, ActivityIndicator, Alert, SafeAreaView, Platform,
+    Linking
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { predictImage } from '../services/api';
@@ -59,6 +60,30 @@ export default function PredictScreen({ navigation }) {
         if (prediction === 'Damaged') return COLORS.danger;
         if (prediction === 'Intact') return COLORS.success;
         return COLORS.warning;
+    };
+
+    const handleGenerateReport = () => {
+        if (!result) return;
+        
+        // Build the URL with query parameters
+        // In a real app we might use expo-file-system and expo-sharing, 
+        // but for web/universal compatibility, opening the URL is easiest
+        const baseUrl = 'https://damage-4.onrender.com';
+        const queryParams = new URLSearchParams({
+            prediction: result.prediction || 'Unknown',
+            confidence: result.confidence || 0,
+            severity: result.severity || 'Unknown',
+            decision: result.decision || 'N/A'
+            // We omit image upload for simplicity in this frontend test, 
+            // but the backend handles it if provided.
+        }).toString();
+        
+        const reportUrl = `${baseUrl}/api/generate-report/?${queryParams}`;
+        
+        Linking.openURL(reportUrl).catch((err) => {
+            console.error("Failed to open report URL:", err);
+            Alert.alert("Error", "Could not generate report. Please try again.");
+        });
     };
 
     return (
@@ -150,6 +175,15 @@ export default function PredictScreen({ navigation }) {
                         <View style={styles.barBg}>
                             <View style={[styles.barFill, { width: `${Math.min(result.confidence, 100)}%`, backgroundColor: result.color || getResultColor(result.prediction) }]} />
                         </View>
+
+                        {/* Generate PDF Report Button */}
+                        <TouchableOpacity
+                            style={styles.pdfBtn}
+                            onPress={handleGenerateReport}
+                        >
+                            <Text style={styles.pdfBtnText}>📄 GENERATE PDF REPORT</Text>
+                        </TouchableOpacity>
+
                         <TouchableOpacity
                             style={styles.resetBtn}
                             onPress={() => { setImageUri(null); setResult(null); }}
@@ -186,7 +220,9 @@ const styles = StyleSheet.create({
     confidenceValue: { fontSize: 20, fontWeight: '800' },
     barBg: { height: 12, backgroundColor: COLORS.card2, borderRadius: 6, overflow: 'hidden' },
     barFill: { height: '100%', borderRadius: 6 },
-    resetBtn: { marginTop: 24, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
+    pdfBtn: { marginTop: 24, paddingVertical: 16, borderRadius: 16, backgroundColor: 'rgba(41, 128, 185, 0.15)', borderWidth: 1.5, borderColor: '#2980b9', alignItems: 'center', shadowColor: '#2980b9', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8 },
+    pdfBtnText: { color: '#3498db', fontWeight: '900', fontSize: 16, letterSpacing: 1 },
+    resetBtn: { marginTop: 16, paddingVertical: 15, borderRadius: 14, backgroundColor: COLORS.card2, borderWidth: 1, borderColor: COLORS.border, alignItems: 'center' },
     resetBtnText: { color: COLORS.primaryLight, fontWeight: '800', fontSize: 15 },
     detailsBox: { 
         marginVertical: 18, 
