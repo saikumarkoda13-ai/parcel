@@ -6,8 +6,32 @@ import { Platform } from 'react-native';
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 60000, // Increased timeout for heavy image uploads
+  timeout: 60000, 
 });
+
+// REQUEST INTERCEPTOR — Log request start
+api.interceptors.request.use((config) => {
+  config.metadata = { startTime: new Date() };
+  console.log(`[API REQUEST] ${config.method.toUpperCase()} ${config.url}`);
+  return config;
+});
+
+// RESPONSE INTERCEPTOR — Log timing and handle errors
+api.interceptors.response.use(
+  (response) => {
+    const duration = new Date() - response.config.metadata.startTime;
+    console.log(`[API RESPONSE] ${response.config.method.toUpperCase()} ${response.config.url} - ${response.status} (${duration}ms)`);
+    return response;
+  },
+  (error) => {
+    const duration = error.config ? new Date() - error.config.metadata.startTime : 'N/A';
+    console.error(`[API ERROR] ${error.config?.method?.toUpperCase()} ${error.config?.url} - ${error.message} (${duration}ms)`);
+    return Promise.reject(error);
+  }
+);
+
+export const checkHealth = () => 
+  api.get('/').then(r => r.data).catch(() => ({ success: false, message: 'Offline' }));
 
 export const registerUser = (data) =>
   api.post('/api/register/', data).then(r => r.data);

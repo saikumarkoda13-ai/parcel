@@ -16,14 +16,21 @@ export default function PredictScreen({ navigation }) {
     const pickFromGallery = async () => {
         const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow gallery access to upload parcel images.'); return; }
-        const res = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 0.9 });
+        const res = await ImagePicker.launchImageLibraryAsync({ 
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, 
+            quality: 0.7, // Reduced from 0.9 for faster upload
+            allowsEditing: true, // Allow cropping for better accuracy
+        });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
     const pickFromCamera = async () => {
         const perm = await ImagePicker.requestCameraPermissionsAsync();
         if (!perm.granted) { Alert.alert('Permission needed', 'Allow camera access to take photos.'); return; }
-        const res = await ImagePicker.launchCameraAsync({ quality: 0.9 });
+        const res = await ImagePicker.launchCameraAsync({ 
+            quality: 0.7, // Reduced from 0.9 for faster upload
+            allowsEditing: true,
+        });
         if (!res.canceled) { setImageUri(res.assets[0].uri); setResult(null); }
     };
 
