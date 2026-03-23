@@ -2,5 +2,8 @@
   "buildCommand": "npx expo export",
   "outputDirectory": "dist",
   "framework": "expo",
-  "rootDirectory": "parcel-damage-app"
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
