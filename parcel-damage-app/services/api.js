@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 60000, 
+  timeout: 30000, // Reduced from 60s for faster error feedback
 });
 
 // REQUEST INTERCEPTOR — Log request start
