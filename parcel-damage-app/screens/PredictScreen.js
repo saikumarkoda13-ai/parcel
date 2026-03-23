@@ -68,7 +68,7 @@ export default function PredictScreen({ navigation }) {
         // Build the URL with query parameters
         // In a real app we might use expo-file-system and expo-sharing, 
         // but for web/universal compatibility, opening the URL is easiest
-        const baseUrl = 'https://damage-4.onrender.com';
+        const baseUrl = 'https://damage-1-c2vz.onrender.com';
         const queryParams = new URLSearchParams({
             prediction: result.prediction || 'Unknown',
             confidence: result.confidence || 0,

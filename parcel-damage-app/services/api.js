@@ -1,5 +1,5 @@
 // PRODUCTION — Pointing to deployed Render backend
-const BASE_URL = 'https://damage-4.onrender.com';
+const BASE_URL = 'https://damage-1-c2vz.onrender.com';
 
 import axios from 'axios';
 import { Platform } from 'react-native';
@@ -26,7 +26,7 @@ export const predictImage = async (imageUri) => {
   let filename = imageUri.split('/').pop() || 'image.jpg';
   let match = /\.(\w+)$/.exec(filename);
   let type = match ? `image/${match[1] === 'jpg' ? 'jpeg' : match[1]}` : 'image/jpeg';
-  
+
   if (Platform.OS === 'web') {
     // For Web, we must fetch the URI to get a Blob/File
     const response = await fetch(imageUri);
